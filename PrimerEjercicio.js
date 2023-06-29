@@ -1,33 +1,41 @@
 class productManager{
     products;
-    
-    constructor() {
+    #path = ""
+    constructor(path) {
+        this.#path = path
         this.products = [];
     }
-    addProduct (tittle,description,price,thumbnail,code,stock,id) {
+    async addProduct (tittle,description,price,thumbnail,code,stock,id) {
         
         let codeRepeat = this.products.some(dato => dato.code === code)
         this.products.push(newProduct);
         if(!this.tittle || !this.description || !this.price || !this.thumbnail || !this.code || !this.stock) {
-            console.error("Faltan campos por completar");
+            throw new Error("Faltan campos por completar");
         }else if(codeRepeat){
-            console.error("codigo repetido");
+            throw new Error("codigo repetido");
         }
         else {
             const newProduct = { tittle,description,price,thumbnail,code,stock,id: this.products.length +1 }
             this.products.push()
             
         }
+        await fs.promises.writeFile(this.#path, JSON.stringify(products))
     }
-    getProducts =() => {
-        return this.products
-    }
-    getProductsById =() => {
-        let product = this.products.find(p => p.id === id)
-        if(product !== undefined){
-            return product;
-        }else{
-            return "no existe el id solicitado";
+    async getProducts() {
+        try {
+            const products = await fs.promises.readFile(this.#path, "utf-8")
+            return JSON.parse(products);
+        } catch {
+            return []
         }
-    }
+    };
+    async getProductsById(id) {
+        let products = await this.getProducts();
+        let findID = products.map(e => e.id === id);
+        if (findID) {
+            return findID
+        } else {
+            throw new Error("El ID indicado no existe")
+        }
+    };
 }
