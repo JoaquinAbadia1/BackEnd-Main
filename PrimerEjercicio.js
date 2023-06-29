@@ -50,12 +50,16 @@ class productManager{
         console.log('Producto eliminado con éxito')
     }
     async updateProdcutByID(id,modified){
-        let product = await this.getProduct()
+        let product = await this.getProducts()
         let idSearch = product.find(i => i.id === id)
         if (!idSearch){
             throw new Error("No se a econtrado el id especificado");
         }else{
-            await fs.promises.writeFile(this.#path, JSON.stringify(products))
+            idSearch = { ...idSearch, modified };
+            let newArray = product.filter(prods => prods.id !== id)
+            newArray = [...newArray, idSearch];
+            await fs.promises.writeFile(this.#path, JSON.stringify(newArray));
+            console.log('Modificación realizada con éxito.')
         }
     }
 }
@@ -63,6 +67,6 @@ class productManager{
 
 const main = async () => {
     const manager = new productManager("./products.json");
-    await manager.addProduct("juego", "ps4", 22.3434 , "thumbnail", 33, 55)
+    await manager.updateProdcutByID(1 , "juegazo")
 }
     main()
