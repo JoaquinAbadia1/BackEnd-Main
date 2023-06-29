@@ -1,25 +1,10 @@
+const fs = require("fs");
 class productManager{
     products;
     #path = ""
     constructor(path) {
         this.#path = path
         this.products = [];
-    }
-    async addProduct (tittle,description,price,thumbnail,code,stock,id) {
-        
-        let codeRepeat = this.products.some(dato => dato.code === code)
-        this.products.push(newProduct);
-        if(!this.tittle || !this.description || !this.price || !this.thumbnail || !this.code || !this.stock) {
-            throw new Error("Faltan campos por completar");
-        }else if(codeRepeat){
-            throw new Error("codigo repetido");
-        }
-        else {
-            const newProduct = { tittle,description,price,thumbnail,code,stock,id: this.products.length +1 }
-            this.products.push()
-            
-        }
-        await fs.promises.writeFile(this.#path, JSON.stringify(products))
     }
     async getProducts() {
         try {
@@ -29,6 +14,25 @@ class productManager{
             return []
         }
     };
+
+    async addProduct (title,description,price,thumbnail,code,stock) {
+        
+        let products = await this.getProducts()
+        let codeRepeat = products.some(dato => dato.code === code)
+        if(!title || !description || !price || !thumbnail || !code || !stock) {
+            throw new Error("Faltan campos por completar");
+        }else if(codeRepeat){
+            throw new Error("codigo repetido");
+        }
+        else {
+            const newProduct = { title,description,price,thumbnail,code,stock,id: products.length +1 }
+            products = [...products, newProduct];
+            // this.products.push()
+            await fs.promises.writeFile(this.#path, JSON.stringify(products))
+        }
+        
+    }
+    
     async getProductsById(id) {
         let products = await this.getProducts();
         let findID = products.map(e => e.id === id);
@@ -38,4 +42,27 @@ class productManager{
             throw new Error("El ID indicado no existe")
         }
     };
+
+    async deleteProduct(id) {
+        let product = await this.getProducts();
+        let searchIdDelete = product.filter(i => i.id !== id)
+        await fs.promises.writeFile(this.#path, JSON.stringify(searchIdDelete))
+        console.log('Producto eliminado con éxito')
+    }
+    async updateProdcutByID(id,modified){
+        let product = await this.getProduct()
+        let idSearch = product.find(i => i.id === id)
+        if (!idSearch){
+            throw new Error("No se a econtrado el id especificado");
+        }else{
+            await fs.promises.writeFile(this.#path, JSON.stringify(products))
+        }
+    }
 }
+
+
+const main = async () => {
+    const manager = new productManager("./products.json");
+    await manager.addProduct("juego", "ps4", 22.3434 , "thumbnail", 33, 55)
+}
+    main()
