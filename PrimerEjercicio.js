@@ -1,14 +1,15 @@
-const fs = require("fs");
+import fs from 'fs';
 class productManager{
     products;
     #path = ""
     constructor(path) {
         this.#path = path
-        this.products = [];
+        
     }
     async getProducts() {
         try {
             const products = await fs.promises.readFile(this.#path, "utf-8")
+            console.log(JSON.parse(products))
             return JSON.parse(products);
         } catch {
             return []
@@ -35,8 +36,9 @@ class productManager{
     
     async getProductsById(id) {
         let products = await this.getProducts();
-        let findID = products.map(e => e.id === id);
+        let findID = products.find(e => e.id === id);
         if (findID) {
+            console.log(findID)
             return findID
         } else {
             throw new Error("El ID indicado no existe")
@@ -45,12 +47,13 @@ class productManager{
 
     async deleteProduct(id) {
         let product = await this.getProducts();
-        let searchIdDelete = product.filter(i => i.id !== id)
+        let searchIdDelete = product.map(i => i.id !== id)
         await fs.promises.writeFile(this.#path, JSON.stringify(searchIdDelete))
         console.log('Producto eliminado con éxito')
     }
     async updateProdcutByID(id,modified){
-        let product = await this.getProducts()
+        let product =  await this.getProducts()
+        console.log(product)
         let idSearch = product.find(i => i.id === id)
         if (!idSearch){
             throw new Error("No se a econtrado el id especificado");
@@ -67,6 +70,11 @@ class productManager{
 
 const main = async () => {
     const manager = new productManager("./products.json");
-    await manager.updateProdcutByID(1 , "juegazo")
+    // await manager.addProduct("juego", "asdf", 999 , "asdasdasdasdasdasdas", 123,33333);
+    // await manager.deleteProduct(3)
+    //await manager.getProducts()
+    // await manager.getProductsById(4)
+    await manager.updateProdcutByID(1, "asdasdasdasdas")
+
 }
-    main()
+main()

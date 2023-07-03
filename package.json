@@ -1,0 +1,17 @@
+{
+  "name": "backend-main",
+  "version": "1.0.0",
+  "main": "PrimerEjercicio.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon PrimerEjercicio.js", 
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
