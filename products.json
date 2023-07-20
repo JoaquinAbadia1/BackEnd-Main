@@ -1,1 +1,11 @@
-[{"title":"juego","description":"ps4","price":22.3434,"thumbnail":"thumbnail","code":33,"stock":55,"id":2},{"title":"juego","description":"ps4","price":22.3434,"thumbnail":"thumbnail","code":33,"stock":55,"id":111,"modified":"asdasdasdasdas"},{"title":"Camiseta","description":"Camiseta de color azul","price":"50","thumbnail":"https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png","code":"1","stock":"10","id":3},{"title":"Camiseta","description":"Camiseta de color azul","price":"50123123123","thumbnail":"https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png","code":"1123123","stock":"101323123","id":4}]
+[
+  {
+    "title": "jueguito",
+    "description": "el mejor del mundo",
+    "price": 123141332,
+    "thumbnail": 14544444454,
+    "code": "success",
+    "stock": 99,
+    "id": 2
+  }
+]
