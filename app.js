@@ -1,29 +1,31 @@
-import fs from 'fs';
-import http from 'http';
-import express from 'express'
-import productManager from './productManager.js';
-const app = express()
+import express from "express";
+import productRouter from "./src/Router/products.routes.js";
+import cartRouter from "./src/Router/cart.routes.js";
+import viewsRouter from "./src/Router/views.routes.js";
+import { engine } from "express-handlebars";
+
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 // Apertura del servidor
-app.get('/', (req, res) => {
-    res.send('Welcome to the world with your new web app')
-})
+app.get("/", (req, res) => {
+  res.send("Welcome to the world with your new web app");
+});
+
+// la api de productos
+app.use("/api/products", productRouter);
+// la api de carrito
+app.use("/api/cart", cartRouter);
+// api de las views
+app.use(express.static("public"));
+app.use("/api/views", viewsRouter);
+// handdlebars
+app.engine("handlebars", engine());
+app.set("view engine", "handlebars");
+app.set("views", "./views");
+
+app.use(express.static("public"));
+// app.use("/views", viewsRoute);
+
 // escucha del servidor
-app.listen(8080, () => console.log('Server listening on port 8080'));
-
-const product = new productManager("./products.json")
-
-app.get('/products', (req, res) => {
-    const products =  product.getProducts()
-    res.json(products)
-})
-
-app.get('/products/:id', (req, res) => {
-    res.json(product.getProductsById(req.params.id))
-})
-app.get('/products/addProduct', (req, res) => {
-    let {title,description,price,thumbnail,code,stock} = req.query
-    product.addProduct(title,description,price,thumbnail,code,stock)
-    res.send('producto agregado')
-
-    
-})
+app.listen(8080, () => console.log("Server listening on port 8080"));
