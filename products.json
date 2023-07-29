@@ -1,11 +1,38 @@
 [
   {
-    "title": "jueguito",
-    "description": "el mejor del mundo",
-    "price": 123141332,
-    "thumbnail": 14544444454,
-    "code": "success",
+    "title": "God of War Ragnasd3434arök",
+    "description": "Desde Santa Monica Studio llega la secuela del aclamado por la crítica God of War (2018). Fimbulvetr ya está en camino. Kratos y Atreus deben viajar a cada uno de los nueve reinos en búsqueda de respuestas, mientras que las fuerzas asgardianas se preparan para una batalla profetizada que terminará con el mundo. En el camino explorarán paisajes increíbles y míticos, y se enfrentarán a aterradores enemigos en la forma de dioses nórdicos y monstruos. La amenaza del Ragnarök cada vez está más cerca. Kratos y Atreus deben elegir entre su propia seguridad y la seguridad de los reinos.",
+    "price": "US$69.99",
+    "tumbnail": "https://www.playstation.com/es-ar/games/god-of-war-ragnarok/",
+    "code": 2,
     "stock": 99,
-    "id": 2
+    "category": "PS5"
+  },
+  {
+    "title": "Marvel's Spider-Man",
+    "description": "Después de pasar ocho años detrás de la máscara, Peter Parker es un experto en luchar contra el crimen. Siente todo el poder de un Spider-Man más experimentado con combate improvisado, acrobacias dinámicas, recorrido urbano fluido e interacciones con el entorno. Este Spider-Man ya no es un novato, sino la versión más poderosa que jamás hayas controlado. ",
+    "price": "US$49.99",
+    "tumbnail": "https://www.playstation.com/es-cl/games/marvels-spider-man/",
+    "code": 3,
+    "stock": 999,
+    "category": "PS4"
+  },
+  {
+    "title": "Horizon Forbidden West",
+    "description": "Explora tierras remotas, enfréntate a máquinas más grandes e imponentes y descubre increíbles tribus en tu regreso a un futuro lejano en el mundo apocalíptico de Horizon. La tierra se muere. Las rugientes tormentas y una desolación imparable causan estragos entre lo que queda de la humanidad, unas cuantas tribus dispersas, mientras nuevas y temibles máquinas merodean por sus fronteras. La vida en la Tierra se enfrenta a una nueva extinción y nadie sabe por qué. Solo Aloy es capaz de descubrir los secretos que hay detrás de estas amenazas, y restablecer el orden y el equilibrio en el mundo. Por el camino, se reunirá con viejos amigos, forjará alianzas con nuevas facciones en guerra y descubrirá la herencia de un antiguo pasado, mientras que intenta permanecer un paso por delante de un nuevo y aparentemente invencible enemigo.",
+    "price": "US$39.89",
+    "tumbnail": "https://www.playstation.com/es-cl/games/horizon-forbidden-west/",
+    "code": 4,
+    "stock": 20,
+    "category": "ps4"
+  },
+  {
+    "title": "Gran Turismo® 7",
+    "description": "Si eres piloto competitivo o casual, coleccionista, aficionado a las modificaciones, diseñador de apariencias o fotógrafo, encuentra tu camino con una colección impresionante de modos de juego, incluidos los favoritos de los fanáticos, como Campaña de GT, Arcade y Escuela de manejo.Gracias a la reincorporación del legendario modo Simulación de GT, puedes comprar autos, modificarlos y correr con ellos en campañas individuales, a medida que desbloqueas nuevos autos y desafíos. Y si te gusta enfrentarte cabeza a cabeza con otros, perfecciona tus habilidades y compite en el modo Sport.Con más de 420 autos disponibles en Brand Central y la concesionaria de autos usados desde el primer día, Gran Turismo 7 recrea la apariencia y el manejo de vehículos clásicos y superautos vanguardistas con un nivel de detalle sin precedentes. Cada auto tiene una sensación de conducción diferente y única en más de 90 pistas en diferentes condiciones climáticas, incluidas las pistas clásicas de la historia de GT",
+    "price": "69.99",
+    "tumbnail": "https://www.playstation.com/es-cl/games/gran-turismo-7/",
+    "code": 5,
+    "stock": 10,
+    "category": "ps4"
   }
 ]

@@ -30,40 +30,15 @@ productRouter.get("/:id", async (req, res) => {
 });
 
 productRouter.post("/newProduct", async (req, res) => {
-  const {
-    title,
-    description,
-    code,
-    price,
-    status,
-    stock,
-    category,
-    tumbnails,
-  } = req.body;
+  const { title, description, code, price, stock, category, tumbnail } =
+    req.body;
   const product = {};
   if (!title || !description || !code || !price || !stock || !category) {
     res.json({ error: "Faltan datos" });
   } else {
     const product = new productManager("./products.json");
-    (product.tittle = title),
-      (product.description = description),
-      (product.price = price),
-      (product.stock = stock),
-      (product.category = category),
-      (product.tumbnails = tumbnails),
-      (product.code = code),
-      (product.status = status);
     try {
-      let newProduct = await product.addProduct(
-        title,
-        description,
-        code,
-        price,
-        status,
-        stock,
-        category,
-        tumbnails
-      );
+      let newProduct = await product.addProduct(req.body);
       res.json(newProduct);
     } catch (error) {
       res.status(500).json({ message: error.message });
@@ -72,7 +47,7 @@ productRouter.post("/newProduct", async (req, res) => {
   }
 });
 
-productRouter.put("/:id", async (req, res) => {
+productRouter.put("/:code", async (req, res) => {
   const {
     title,
     description,
@@ -83,7 +58,8 @@ productRouter.put("/:id", async (req, res) => {
     category,
     tumbnails,
   } = req.body;
-  let idParam = req.params.id;
+  const product = new productManager("./products.json");
+  let idParam = req.params.code;
   try {
     res.json(await product.updateProdcutByID(parseInt(idParam)));
   } catch (error) {
