@@ -14,7 +14,7 @@ class cartManager {
   async getCarts() {
     try {
       const carts = await fs.promises.readFile(this.#path, "utf-8");
-      console.log(JSON.parse(carts));
+      //console.log(JSON.parse(carts));
       return JSON.parse(carts);
     } catch {
       return [];
@@ -23,7 +23,7 @@ class cartManager {
   async newCart() {
     this.carts = await this.getCarts();
     this.carts.push({ products: [], id: this.carts.length + 1 });
-    //console.log(this.carts);
+    console.log(this.carts);
     const result = await fs.promises.writeFile(
       "./carts.json",
       JSON.stringify(this.carts)
@@ -33,7 +33,7 @@ class cartManager {
 
   async getCartsById(id) {
     const carts = await this.getCarts();
-    const cart = carts.find((e) => e.id === id);
+    const cart = carts.map((e) => e.id === id);
     //console.log(cart);
     if (!cart || cart === undefined) {
       throw new Error("debe ingresar un id de carrito existente");

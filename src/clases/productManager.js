@@ -2,6 +2,7 @@ import fs from "fs";
 
 class productManager {
   products;
+  product;
   #path = "";
   constructor(path) {
     this.#path = path;
@@ -9,65 +10,54 @@ class productManager {
   async getProducts() {
     try {
       const products = await fs.promises.readFile(this.#path, "utf-8");
-      console.log(JSON.parse(products));
+      //console.log(JSON.parse(products));
       return JSON.parse(products);
     } catch {
       return [];
     }
   }
 
-  async addProduct(title, description, price, thumbnail, code, stock) {
-    let products = await this.getProducts();
-    console.log(JSON.parse(products));
-    let codeRepeat = products.some((dato) => dato.code === code);
-    if (!title || !description || !price || !thumbnail || !code || !stock) {
+  async addProduct(product) {
+    this.products = await this.getProducts();
+    //console.log(JSON.parse(products));
+    let codeRepeat = this.products.some((dato) => dato.code === product.code);
+    if (!this.products) {
       throw new Error("Faltan campos por completar");
     } else if (codeRepeat) {
       throw new Error("codigo repetido");
     } else {
-      const newProduct = {
-        title,
-        description,
-        price,
-        thumbnail,
-        code,
-        stock,
-        id: products.length + 1,
-      };
-      products = [...products, newProduct];
-      // this.products.push()
-      await fs.promises.writeFile(this.#path, JSON.stringify(products));
+      this.products.push(product);
+      await fs.promises.writeFile(this.#path, JSON.stringify(this.products));
     }
   }
 
-  async getProductsById(id) {
+  async getProductsByCode(code) {
     let products = await this.getProducts();
-    let findID = products.filter((e) => e.id === id);
-    if (findID) {
-      console.log(findID);
-      return findID;
+    let findCode = products.filter((e) => e.code === product.code);
+    console.log(findCode);
+    if (findCode) {
+      console.log(findCode);
+      return findCode;
     } else {
       throw new Error("El ID indicado no existe");
     }
   }
 
-  async deleteProduct(id) {
+  async deleteProduct(code) {
     let product = await this.getProducts();
-    let searchIdDelete = product.map((i) => i.id !== id);
+    let searchIdDelete = product.map((i) => i.code !== product.code);
     await fs.promises.writeFile(this.#path, JSON.stringify(searchIdDelete));
     console.log("Producto eliminado con éxito");
   }
-  async updateProdcutByID(id, modified) {
+  async updateProdcutByCode(code, modified) {
     let product = await this.getProducts();
-    console.log(product);
-    let idSearch = product.find((i) => i.id === id);
-    if (!idSearch) {
-      throw new Error("No se a econtrado el id especificado");
+    let productByCode = await this.getProductsByCode(code);
+    //console.log(product);
+    if (!productByCode) {
+      throw new Error("No se a econtrado el codigo especificado");
     } else {
-      idSearch = { ...idSearch, modified };
-      let newArray = product.filter((prods) => prods.id !== id);
-      newArray = [...newArray, idSearch];
-      await fs.promises.writeFile(this.#path, JSON.stringify(newArray));
+      const modified = productByCode.push(modified);
+      await fs.promises.writeFile(this.#path, JSON.stringify(modified));
       console.log("Modificación realizada con éxito.");
     }
   }
