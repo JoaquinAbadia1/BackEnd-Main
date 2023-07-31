@@ -1,13 +1,13 @@
 import { Router } from "express";
+import __dirname from "../utils.js";
+import { obtenerListaDeProductos } from "../utils.js";
 
 let viewsRouter = Router();
 
 viewsRouter.get("/", (req, res) => {
-  res.render("saludo", { title: "Home", name: joaquin });
-});
-viewsRouter.get("/saludo", (req, res) => {
-  const { name } = req.query;
-  res.render("saludo", { title: "Saludo", name: name });
+  const products = obtenerListaDeProductos();
+  res.render("home", { products });
 });
 
+viewsRouter.get("/realtime", (req, res) => {});
 export default viewsRouter;
