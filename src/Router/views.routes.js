@@ -9,5 +9,8 @@ viewsRouter.get("/", (req, res) => {
   res.render("home", { products });
 });
 
-viewsRouter.get("/realtime", (req, res) => {});
+viewsRouter.get("/realtime", (req, res) => {
+  const products = obtenerListaDeProductos();
+  res.render("realtime", { products });
+});
 export default viewsRouter;
