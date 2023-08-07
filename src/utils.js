@@ -21,7 +21,7 @@ export function guardarProducto({
   description,
   title,
 }) {
-  const filePath = path.join(__dirname, "./products.json");
+  const filePath = path.join("./products.json");
   const fileContent = fs.readFileSync(filePath, "utf8");
   const data = JSON.parse(fileContent);
 

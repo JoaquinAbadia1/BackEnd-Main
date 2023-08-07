@@ -1,3 +1,4 @@
 node_modules
 .env
-src/models/users.models.js
+users.routes.js
+users.models.js

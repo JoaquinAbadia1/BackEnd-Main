@@ -5,7 +5,9 @@ import viewsRouter from "./src/Router/views.routes.js";
 import { engine } from "express-handlebars";
 import { createServer } from "http";
 import __dirname from "./src/utils.js";
+import { guardarProducto } from "./src/utils.js";
 import { Server } from "socket.io";
+import userRouter from "./src/Router/users.routes.js";
 
 const app = express();
 const httpserver = createServer(app);
@@ -31,6 +33,8 @@ app.use("/api/products", productRouter);
 app.use("/api/cart", cartRouter);
 // api de las views
 app.use("/api/views/products", viewsRouter);
+//api de usuarios
+app.use("/api/users", userRouter);
 // Configurar el directorio estático para archivos públicos
 app.use(express.static("public"));
 
@@ -45,4 +49,33 @@ const io = new Server(httpServer);
 // Configurar el evento de conexión de Socket.IO
 io.on("connection", (socket) => {
   console.log("Nuevo cliente conectado");
+
+  // Manejar eventos personalizados
+  socket.on("mensaje", (data) => {
+    console.log("Mensaje recibido:", data);
+
+    // Enviar una respuesta al cliente
+    socket.emit("respuesta", "Mensaje recibido correctamente");
+  });
+
+  // Escuchar evento 'agregarProducto' y emitir 'nuevoProductoAgregado'
+  socket.on("agregarProducto", (newProduct) => {
+    //console.log("Nuevo producto recibido backend:", newProduct);
+    guardarProducto(newProduct);
+    // Agregar el nuevo producto a la lista de productos
+    io.emit("nuevoProductoAgregado", newProduct);
+  });
+
+  /*socket.on("productoEliminado", (productID) => {
+    // Eliminar el producto de la lista en el cliente
+    const productoElement = document.querySelector(`[data-id="${productID}"]`);
+    if (productoElement) {
+      productoElement.parentElement.remove();
+    }
+  });
+  */
+
+  socket.on("disconnect", () => {
+    console.log("Cliente desconectado");
+  });
 });
