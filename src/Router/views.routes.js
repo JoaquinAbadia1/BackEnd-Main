@@ -4,7 +4,7 @@ import { obtenerListaDeProductos } from "../utils.js";
 
 let viewsRouter = Router();
 
-viewsRouter.get("/", (req, res) => {
+viewsRouter.get("/home", (req, res) => {
   const products = obtenerListaDeProductos();
   res.render("home", { products });
 });
@@ -12,5 +12,8 @@ viewsRouter.get("/", (req, res) => {
 viewsRouter.get("/realtime", (req, res) => {
   const products = obtenerListaDeProductos();
   res.render("realtime", { products });
+});
+viewsRouter.get("/chat", (req, res) => {
+  res.render("chat", {});
 });
 export default viewsRouter;
