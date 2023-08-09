@@ -10,6 +10,7 @@ import { Server } from "socket.io";
 import userRouter from "./src/Router/users.routes.js";
 import * as dotenv from "dotenv";
 import mongoose from "mongoose";
+import chatRouter from "./src/Router/chat.routes.js";
 
 dotenv.config();
 const app = express();
@@ -38,6 +39,8 @@ app.use("/api/cart", cartRouter);
 app.use("/api/views", viewsRouter);
 //api de usuarios
 app.use("/api/users", userRouter);
+//api del chat
+app.use("/api/chat", chatRouter);
 // Configurar el directorio estático para archivos públicos
 app.use(express.static("public"));
 

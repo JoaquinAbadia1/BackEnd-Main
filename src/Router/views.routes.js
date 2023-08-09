@@ -13,7 +13,5 @@ viewsRouter.get("/realtime", (req, res) => {
   const products = obtenerListaDeProductos();
   res.render("realtime", { products });
 });
-viewsRouter.get("/chat", (req, res) => {
-  res.render("chat", {});
-});
+
 export default viewsRouter;
