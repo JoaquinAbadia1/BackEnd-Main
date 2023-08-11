@@ -1,16 +1,10 @@
 import mongoose from "mongoose";
 
-const chatsCollection = "chats";
-
-const chatsSchema = new mongoose.Schema({
-  message: String,
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
+const messageSchema = new mongoose.Schema({
+  content: String,
+  createdAt: { type: Date, default: Date.now },
 });
 
-const chatsModel = mongoose.model(chatsCollection, chatsSchema);
+const Message = mongoose.model("Message", messageSchema);
 
-export default chatsModel;
+export default Message;
