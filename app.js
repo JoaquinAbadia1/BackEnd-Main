@@ -10,7 +10,7 @@ import { Server } from "socket.io";
 import userRouter from "./src/Router/users.routes.js";
 import * as dotenv from "dotenv";
 import mongoose from "mongoose";
-import chatRouter from "./src/Router/chat.routes.js";
+import Message from "./src/models/chat.models.js";
 
 dotenv.config();
 const app = express();
@@ -39,8 +39,6 @@ app.use("/api/cart", cartRouter);
 app.use("/api/views", viewsRouter);
 //api de usuarios
 app.use("/api/users", userRouter);
-//api del chat
-app.use("/api/chat", chatRouter);
 // Configurar el directorio estático para archivos públicos
 app.use(express.static("public"));
 
@@ -55,14 +53,13 @@ let messages = [];
 // Configurar el evento de conexión de Socket.IO
 io.on("connection", (socket) => {
   console.log("Nuevo cliente conectado!");
-  socket.on("new-user", (data) => {
-    socket.user = data.user;
-    socket.id = data.id;
-    io.emit("new-user-connected", {
-      user: socket.user,
-      id: socket.id,
-    });
+
+  socket.on("chat message", async (msg) => {
+    // Crea un nuevo mensaje y guárdalo en la base de datos
+    const message = new Message({ content: msg });
+    await message.save();
   });
+
   socket.on("message", (data) => {
     messages.push(data);
     io.emit("messageLogs", messages);
