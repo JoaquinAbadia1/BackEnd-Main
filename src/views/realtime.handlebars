@@ -48,8 +48,10 @@
       name="stock"
       placeholder="Stock del producto"
     />
-
-    <button type="submit">Agregar</button>
+    <script>
+      function refrescarPagina() { location.reload(); }
+    </script>
+    <button type="submit" onclick="refrescarPagina()">Agregar</button>
   </form>
   <ul id="productList">
     {{#each products}}
@@ -59,6 +61,7 @@
         <p>Descripción: {{description}}</p>
         <p>Precio: {{price}}</p>
         <img src={{thumbnail}} />
+
         <button class="btnEliminar" data-id="{{id}}">Eliminar</button>
       </li>
     {{/each}}

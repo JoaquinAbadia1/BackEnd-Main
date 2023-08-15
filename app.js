@@ -73,14 +73,13 @@ io.on("connection", (socket) => {
     io.emit("nuevoProductoAgregado", newProduct);
   });
 
-  /*socket.on("productoEliminado", (productID) => {
+  socket.on("productoEliminado", (productID) => {
     // Eliminar el producto de la lista en el cliente
     const productoElement = document.querySelector(`[data-id="${productID}"]`);
     if (productoElement) {
       productoElement.parentElement.remove();
     }
   });
-  */
 
   socket.on("disconnect", () => {
     console.log("Cliente desconectado");
