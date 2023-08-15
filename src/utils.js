@@ -20,6 +20,8 @@ export function guardarProducto({
   thumbnail,
   description,
   title,
+  stock,
+  code,
 }) {
   const filePath = path.join("./products.json");
   const fileContent = fs.readFileSync(filePath, "utf8");
@@ -31,6 +33,8 @@ export function guardarProducto({
     thumbnail: thumbnail,
     description: description,
     title: title,
+    stock: stock,
+    code: code,
   });
 
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf8");

@@ -36,9 +36,59 @@
     "category": "ps4"
   },
   {
-    "price": "123123",
-    "thumbnail": "asdasd",
-    "description": "q32132",
-    "title": "asdasd"
+    "price": "1999",
+    "thumbnail": "https://www.playstation.com/es-es/games/bloodborne/",
+    "code": 6,
+    "stock": 10,
+    "description": "Da caza a tus pesadillas\nUn viajero solitario. Un pueblo maldito. Un misterio letal que devora todo lo que toca. Enfréntate a tus miedos y adéntrate en la ciudad en ruinas de Yharnam, un lugar abandonado asolado por una terrible enfermedad que lo consume todo. Examina sus sombras más oscuras, lucha por tu vida con armas de filo y de fuego, y descubre secretos que harán que se te hiele la sangre... pero que podrían salvarte el pellejo...\n\nhttps://userguides.eu.playstation.com/en/bloodborne/",
+    "title": "Bloodborne"
+  },
+  {
+    "price": "69.99",
+    "thumbnail": "https://www.playstation.com/es-es/games/sackboy-a-big-adventure/",
+    "code": 7,
+    "stock": 10,
+    "description": "Sackboy: Una aventura a lo grande es un videojuego de aventura y plataformas en 3D para PlayStation 4 y PlayStation 5 que nos invita a encarnar al carismático personaje de Sackboy. En este título en solitario, alejado de la fórmula de Little Big Planet, Sumo Digital nos llevará a disfrutar de un mundo colorido y creativo, así como lleno de cosas por hacer.",
+    "title": "Sackboy: Una aventura a lo grande"
+  },
+  {
+    "price": "39.00",
+    "thumbnail": "https://www.playstation.com/es-es/games/days-gone/",
+    "code": 8,
+    "stock": 10,
+    "description": "¿Tienes la habilidad y el nervio que hay que tener para sobrevivir a los horrores de un mundo destrozado en esta aventura de acción que incluye un enorme mundo abierto?\n\nPonte en los zapatos salpicados de barro del otrora forajido Deacon St. John, un motero cazarrecompensas que intenta buscar una razón por la que vivir en una tierra repleta de muerte. Investiga asentamientos abandonados en busca de equipamiento para crear objetos valiosos y armas o arriesgarte a tratar con otros supervivientes que se ganan la vida a duras penas mediante intercambios justos... u otros métodos más violentos.\n\nEn un contexto en el que una pandemia global ha arrasado la humanidad y unas criaturas feroces conocidas como engendros le dan caza, cualquier error podría ser tu último intento de labrarte una nueva vida en el hostil desierto del noroeste pacífico. ",
+    "title": "Days Gone"
+  },
+  {
+    "price": "99.99",
+    "thumbnail": "https://www.playstation.com/es-es/games/death-stranding/",
+    "code": 9,
+    "stock": 10,
+    "description": "Hideo Kojima, el legendario creador de videojuegos nos ofrece una novedosa aventura de acción en mundo abierto para PS4 que desafía a todos los géneros, protagonizada por Norman Reedus, Mads Mikkelsen, Léa Seydoux y Lindsay Wagner.\n\nEn un futuro cercano, unas misteriosas explosiones han sacudido la Tierra, provocando una serie de eventos sobrenaturales conocidos como el Death Stranding. Unas criaturas insólitas invaden el paisaje y la extinción masiva es inminente. Sam Porter Bridges deberá atravesar el devastado páramo para salvar a la humanidad de una aniquilación inminente. ",
+    "title": "Death Stranding"
+  },
+  {
+    "price": "79.99",
+    "thumbnail": "https://www.playstation.com/es-es/games/ghost-of-tsushima/",
+    "code": 10,
+    "stock": 10,
+    "description": "Descubre las maravillas ocultas de Tsushima en esta aventura de acción de mundo abierto creada por Sucker Punch Productions y PlayStation Studios, disponible para PS5 y PS4.\n\nForja un nuevo camino y libra una guerra poco convencional por la libertad de Tsushima. Reta a los oponentes con tu katana, domina el arco para eliminar amenazas a distancia, desarrolla tácticas de sigilo para tender emboscadas a los enemigos y explora una nueva historia en la isla de Iki.",
+    "title": "Ghost of Tsushima Director's Cut"
+  },
+  {
+    "price": "100.00",
+    "thumbnail": "https://www.playstation.com/es-es/games/uncharted-4-a-thiefs-end/",
+    "code": 11,
+    "stock": 10,
+    "description": "Tres años después de los hechos acaecidos en UNCHARTED 3: La Traición de Drake, Nathan Drake ha dejado atrás la búsqueda de tesoros. Sin embargo, el destino no tarda en llamar a su puerta cuando su Sam reaparece pidiéndole ayuda para salvar su vida, además de ofrecerle participar en una aventura ante la que Drake no puede resistirse.  \n\n \n\nLos dos parten a la caza del tesoro perdido del capitán Henry Avery y en busca de Libertalia, el utópico refugio pirata que se halla en lo más profundo de los bosques de Madagascar. UNCHARTED 4: El Desenlace del Ladrón embarca al jugador en un viaje alrededor del mundo por islas selváticas, grandes ciudades y nevados picos montañosos en busca del tesoro de Avery.",
+    "title": "UNCHARTED 4: A Thief's End"
+  },
+  {
+    "price": "55.5",
+    "thumbnail": "https://www.playstation.com/es-es/games/the-last-of-us-part-ii/",
+    "code": 12,
+    "stock": 10,
+    "description": "Cinco años después de su peligroso viaje por un Estados Unidos postapocalíptico, Ellie y Joel se han asentado en Jackson, Wyoming. La vida en una próspera comunidad de supervivientes les ha permitido disfrutar de paz y estabilidad, a pesar de la amenaza constante de los infectados y de otros supervivientes más desesperados.\n\nSin embargo, tras un hecho violento que altera esa paz, Ellie se embarca en un viaje implacable en busca de justicia. A medida que va dando caza a los culpables uno a uno, deberá afrontar las devastadoras consecuencias, tanto físicas como emocionales, de sus acciones.",
+    "title": "The Last of Us Parte II"
   }
 ]
