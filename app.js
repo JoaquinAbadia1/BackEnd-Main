@@ -11,6 +11,7 @@ import userRouter from "./src/Router/users.routes.js";
 import * as dotenv from "dotenv";
 import mongoose from "mongoose";
 import Message from "./src/models/chat.models.js";
+import homeRouter from "./src/Router/home.routes.js";
 
 dotenv.config();
 const app = express();
@@ -22,15 +23,13 @@ const httpServer = app.listen(PORT, () => {
 });
 // Apertura del servidor
 httpServer.on("error", (err) => console.log(err));
-// prueba del servidor
-app.get("/", (req, res) => {
-  res.send("Welcome to the world with your new web app");
-});
 
 // Configurar el middleware para manejar las solicitudes JSON
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+//home page
+app.use("/", homeRouter);
 // la api de productos
 app.use("/api/products", productRouter);
 // la api de carrito

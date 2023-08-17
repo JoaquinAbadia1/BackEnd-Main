@@ -1,8 +1,31 @@
-<div>
-  <h1>Todos los productos</h1>
-  <ul>
+<div class="contenedor">
+  <h1>Todos los Productos</h1>
+  <ul id="productList">
     {{#each products}}
-      <li>{{title}}</li>
+
+      <div class="card" style="width: 18rem;">
+        <img src="{{thumbnail}}" class="card-img-top" alt="..." />
+        <div class="card-body">
+          <h5 class="card-title">{{title}}</h5>
+          <p class="card-text">{{description}}</p>
+          <p>{{price}}</p>
+          <button class="btn btn-primary" data-id="addtocart">Agregar al carrito</button>
+        </div>
+      </div>
     {{/each}}
   </ul>
 </div>
+
+<link rel="stylesheet" href="/public/css/home.css" />
+<script src="/public/js/home.js"></script>
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+  integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+  crossorigin="anonymous"
+/>
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+  crossorigin="anonymous"
+></script>
