@@ -1,6 +1,4 @@
-import fs, { readFileSync } from "fs";
-import productManager from "./productManager.js";
-import { json } from "express";
+import fs from "fs";
 
 class cartManager {
   id;
@@ -33,34 +31,37 @@ class cartManager {
 
   async getCartsById(id) {
     const carts = await this.getCarts();
+
+    //console.log(carts);
     const cart = carts.map((e) => e.id === id);
-    //console.log(cart);
+    console.log(cart);
     if (!cart || cart === undefined) {
       throw new Error("debe ingresar un id de carrito existente");
     } else {
       return cart;
     }
   }
-  async addProductToCart(id, idProduct) {
-    let cart = await this.getCartsById(id);
-
+  async addProductToCart(idCart, codeProduct) {
+    let cart = await this.getCartsById(idCart);
+    //console.log(cart);
     if (!cart) {
       throw new Error("no existe carrito");
     }
 
     let products = JSON.parse(fs.readFileSync("./products.json"));
-    const product = products.find((e) => e.id === idProduct);
-    console.log(products);
-    console.log(product);
-    console.log(cart.products);
-    let productIndex = cart.products.findIndex(
-      (element) => element.id === product.id
+    //console.log(products);
+    const product = products.find((e) => e.code === codeProduct);
+    //console.log(product);
+    const cartProduct = JSON.parse(cart.products);
+    console.log(cartProduct);
+    let productIndex = cart.products.map(
+      (element) => element.code === product.code
     );
     console.log(productIndex);
     productIndex !== -1
       ? cart.products[productIndex].quantity++
       : cart.products.push({
-          id: idProduct,
+          id: codeProduct,
           quantity: 1,
         });
     fs.promises.writeFile(this.#path, JSON.stringify(cart));
@@ -74,12 +75,12 @@ class cartManager {
   }
 }
 
-//const main = async () => {
-//  const manager = new cartManager("./carts.json");
-//  //await manager.addProductToCart(3, 2);
-//  await manager.getCartsById(3);
-//  //await manager.getCarts();
-//};
+// const main = async () => {
+//   const manager = new cartManager("../../carts.json");
+//   await manager.addProductToCart(1, 4);
+//   //await manager.getCartsById(3);
+//   //await manager.getCarts();
+// };
 
-//main();
+// main();
 export default cartManager;

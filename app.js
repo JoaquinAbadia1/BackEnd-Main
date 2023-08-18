@@ -12,6 +12,7 @@ import * as dotenv from "dotenv";
 import mongoose from "mongoose";
 import Message from "./src/models/chat.models.js";
 import homeRouter from "./src/Router/home.routes.js";
+import productModel from "./src/models/products.models.js";
 
 dotenv.config();
 const app = express();
@@ -86,9 +87,9 @@ io.on("connection", (socket) => {
   });
 });
 
-const MONGO_URI = process.env.MONGO_URI;
-
 // Conexión a la base de datos
+
+const MONGO_URI = process.env.MONGO_URI;
 let dbConnect = mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,

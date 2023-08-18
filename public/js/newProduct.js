@@ -11,6 +11,7 @@ document.getElementById("productForm").addEventListener("submit", (event) => {
   const productThumbnail = document.getElementById("productThumbnail").value;
   const productStock = document.getElementById("productStock").value;
   const productCode = document.getElementById("productCode").value;
+
   console.log(
     "Nuevo producto agregado:",
     productTitle,

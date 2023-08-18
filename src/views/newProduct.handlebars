@@ -48,6 +48,7 @@
       name="stock"
       placeholder="Stock del producto"
     />
+
     <script>
       function refrescarPagina() { location.reload(); }
     </script>
@@ -60,6 +61,8 @@
         <p>Título: {{title}}</p>
         <p>Descripción: {{description}}</p>
         <p>Precio: {{price}}</p>
+        <p>Código del producto: {{code}}</p>
+        <p>stock: {{stock}}</p>
         <img src={{thumbnail}} />
 
         <button class="btnEliminar" data-id="{{id}}">Eliminar</button>

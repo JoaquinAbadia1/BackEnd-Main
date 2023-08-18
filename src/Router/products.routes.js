@@ -1,50 +1,29 @@
 import { Router } from "express";
 import productManager from "../clases/productManager.js";
+import productModel from "../models/products.models.js";
 
 const productRouter = Router();
 
 const product = new productManager("./products.json");
 
-productRouter.get("/", async (req, res) => {
-  const { limit } = req.query;
-  try {
-    let products = await product.getProducts();
-    if (limit) {
-      let temp = products.filter((dat, index) => index < limit);
-      res.json({ data: temp, limit: limit, quantity: temp.length });
-    } else {
-      res.json(products);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-});
-
 productRouter.get("/:id", async (req, res) => {
-  try {
-    let idParam = req.params.id;
-    res.json(await product.getProductsById(parseInt(idParam)));
-  } catch (error) {
-    throw new Error(error);
-  }
+  let idParam = req.params.code;
+  const newProduct = productModel(req.body);
+  const findById = await newProduct.findById(idParam);
+  res.json(findById);
 });
 
+productRouter.get("/", async (req, res) => {
+  const producto = productModel(req.body);
+  const products = await producto.find();
+  res.json(products);
+});
 productRouter.post("/newProduct", async (req, res) => {
-  const { title, description, code, price, stock, category, tumbnail } =
-    req.body;
-  const product = {};
-  if (!title || !description || !code || !price || !stock || !category) {
-    res.json({ error: "Faltan datos" });
-  } else {
-    const product = new productManager("./products.json");
-    try {
-      let newProduct = await product.addProduct(req.body);
-      res.json(newProduct);
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-      throw new Error(error);
-    }
-  }
+  const newProduct = productModel(req.body);
+  const productSAVED = await newProduct.save();
+  product.addProduct(newProduct);
+  console.log(productModel(req.body));
+  res.send(productSAVED);
 });
 
 productRouter.put("/:code", async (req, res) => {

@@ -15,11 +15,11 @@ cartRouter.post("/newCart", async (req, res) => {
     throw new Error(err);
   }
 });
-cartRouter.post("/:cid/product/:pid", async (req, res) => {
+cartRouter.post("/:cid/product/:pcode", async (req, res) => {
   const idCart = Number(req.params.cid);
-  const idProduct = Number(req.params.pid);
+  const codeProduct = Number(req.params.pcode);
   try {
-    const productAdd = await cart.addProductToCart(idCart, idProduct);
+    const productAdd = await cart.addProductToCart(idCart, codeProduct);
     res.json({ status: "200 ok", message: productAdd });
   } catch (error) {
     throw new Error(error);
