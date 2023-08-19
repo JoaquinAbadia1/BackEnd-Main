@@ -15,5 +15,15 @@ productRouter.get("/:id", async (req, res) => {
 productRouter.post("/addnewProduct", async (req, res) => {});
 
 productRouter.put("/:code", async (req, res) => {});
-productRouter.delete("/:id", async (req, res) => {});
+productRouter.delete("/productos/:id", async (req, res) => {
+  try {
+    const producto = await productModel.findByIdAndRemove(req.params.id);
+    if (!producto) {
+      return res.status(404).send("Producto no encontrado");
+    }
+    return res.status(200).send("Producto eliminado correctamente");
+  } catch (error) {
+    return res.status(500).send("Error al eliminar el producto");
+  }
+});
 export default productRouter;

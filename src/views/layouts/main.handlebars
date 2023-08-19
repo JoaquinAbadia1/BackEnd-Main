@@ -3,13 +3,30 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/style.css" />
-
-    <title>{{title}}</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <title>GameFusion</title>
   </head>
   <body>
+    <header>
+      <a href=""><span>GameFusion</span></a>
+      <ul class="navbar">
+        <li><a href="">Home</a></li>
+        <li><a href="">Chat</a></li>
+        <li><a href="">Nuevo Producto</a></li>
+        <li?><a href="">Contactanos</a></li>
+      </ul>
+      <div class="main">
+        <a href="#" class="user"><i class="ri-user-line"></i></a>
+        <a href="#"><i class="ri-shopping-cart-line"></i></a>
+      </div>
+    </header>
     {{{body}}}
   </body>
   <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/index.js"></script>
   <script src="/js/newProduct.js"></script>
 
 </html>

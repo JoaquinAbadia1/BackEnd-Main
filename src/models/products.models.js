@@ -19,6 +19,7 @@ const productSchema = new mongoose.Schema({
   stock: Number,
   category: String,
   thumbnail: String,
+  category: String,
 });
 
 productSchema.plugin(mongoosePaginate);

@@ -17,5 +17,8 @@ viewsRouter.get("/chat", async (req, res) => {
   const messages = await Message.find().sort("-createdAt"); // Recupera los mensajes de la base de datos
   res.render("chat", { messages });
 });
+viewsRouter.get("/contact", async (req, res) => {
+  res.render("contacto", {});
+});
 
 export default viewsRouter;

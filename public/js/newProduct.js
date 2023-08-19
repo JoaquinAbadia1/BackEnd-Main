@@ -11,16 +11,8 @@ document.getElementById("productForm").addEventListener("submit", (event) => {
   const productThumbnail = document.getElementById("productThumbnail").value;
   const productStock = document.getElementById("productStock").value;
   const productCode = document.getElementById("productCode").value;
+  const productCategory = document.getElementById("productCategory").value;
 
-  // console.log(
-  //   "Nuevo producto agregado:",
-  //   productTitle,
-  //   productDescription,
-  //   productPrice,
-  //   productThumbnail,
-  //   productStock,
-  //   productCode
-  // );
   // Enviar el producto al servidor a través del socket
   socket.emit("agregarProducto", {
     title: productTitle,
@@ -29,5 +21,6 @@ document.getElementById("productForm").addEventListener("submit", (event) => {
     thumbnail: productThumbnail,
     stock: productStock,
     code: productCode,
+    category: productCategory,
   });
 });
