@@ -1,4 +1,5 @@
 import fs from "fs";
+import ProductManager from "./productManager.js";
 
 class cartManager {
   id;
@@ -26,15 +27,15 @@ class cartManager {
       "./carts.json",
       JSON.stringify(this.carts)
     );
-    console.log(result);
+    // console.log(result, "soy el result");
   }
 
   async getCartsById(id) {
     const carts = await this.getCarts();
 
-    //console.log(carts);
-    const cart = carts.map((e) => e.id === id);
-    console.log(cart);
+    // console.log(carts, "soy el getCarts de getCartsById");
+    const cart = carts.filter((e) => e.id === id);
+    // console.log(cart, "soy el getCartsById");
     if (!cart || cart === undefined) {
       throw new Error("debe ingresar un id de carrito existente");
     } else {
@@ -43,27 +44,21 @@ class cartManager {
   }
   async addProductToCart(idCart, codeProduct) {
     let cart = await this.getCartsById(idCart);
-    //console.log(cart);
+    // console.log(cart, "soy el cart");
     if (!cart) {
       throw new Error("no existe carrito");
     }
-
-    let products = JSON.parse(fs.readFileSync("./products.json"));
-    //console.log(products);
-    const product = products.find((e) => e.code === codeProduct);
-    //console.log(product);
-    const cartProduct = JSON.parse(cart.products);
-    console.log(cartProduct);
-    let productIndex = cart.products.map(
-      (element) => element.code === product.code
-    );
-    console.log(productIndex);
-    productIndex !== -1
-      ? cart.products[productIndex].quantity++
-      : cart.products.push({
-          id: codeProduct,
-          quantity: 1,
-        });
+    let productManager = new ProductManager();
+    let products = await productManager.getProducts();
+    // let products = JSON.parse(fs.readFileSync("./products.json"));
+    // console.log(products, "soy el products");
+    const product = products.filter((e) => e.code === codeProduct);
+    console.log(product, "soy el product");
+    console.log(cart, "soy el cart");
+    cart[0].products.push({
+      id: codeProduct,
+      quantity: 1,
+    });
     fs.promises.writeFile(this.#path, JSON.stringify(cart));
   }
 
@@ -78,8 +73,8 @@ class cartManager {
 // const main = async () => {
 //   const manager = new cartManager("../../carts.json");
 //   await manager.addProductToCart(1, 4);
-//   //await manager.getCartsById(3);
-//   //await manager.getCarts();
+//   await manager.getCartsById(3);
+//   await manager.getCarts();
 // };
 
 // main();

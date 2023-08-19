@@ -21,7 +21,10 @@ class productManager {
     //console.log(allProducts);
   }
 
-  async getProductsByCode(code) {}
+  async getProductsByCode(code) {
+    const productById = await productModel.findById(code);
+    return productById;
+  }
 
   async deleteProduct(code) {}
   async updateProdcutByCode(code, modified) {}
