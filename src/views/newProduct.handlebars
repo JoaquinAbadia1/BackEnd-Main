@@ -1,3 +1,42 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="http://localhost:8080/">Home</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarText"
+      aria-controls="navbarText"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="http://localhost:8080/api/views/chat"
+          >chat</a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="http://localhost:8080/api/views/newproduct"
+          >Nuevo Producto</a>
+        </li>
+      </ul>
+      <span class="navbar-text">
+        <a href="http://localhost:8080/api/cart/">🛒</a>
+        <button></button>
+      </span>
+    </div>
+  </div>
+</nav>
 <div>
   <h1>Agregar un nuevo producto</h1>
   <form id="productForm" method="post" action="/realtime">
@@ -54,20 +93,36 @@
     </script>
     <button type="submit" onclick="refrescarPagina()">Agregar</button>
   </form>
-  <ul id="productList">
+
+  <div class="contenedor">
+
     {{#each products}}
-      <li>
-        <h3>{{name}}</h3>
-        <p>Título: {{title}}</p>
-        <p>Descripción: {{description}}</p>
-        <p>Precio: {{price}}</p>
-        <p>Código del producto: {{code}}</p>
-        <p>stock: {{stock}}</p>
-        <img src={{thumbnail}} />
 
-        <button class="btnEliminar" data-id="{{id}}">Eliminar</button>
-      </li>
+      <div class="card">
+        <img src="{{thumbnail}}" class="card-img-top" alt="{{title}}" />
+        <div class="card-body">
+          <h5 class="card-title">{{title}}</h5>
+          <p class="card-text">{{description}}</p>
+          <p>{{price}}</p>
+          <p>stock: {{stock}}</p>
+          <p>Código del producto: {{code}}</p>
+          <p>Precio: U$D {{price}}</p>
+          <button class="btnEliminar" data-id="{{id}}">Eliminar</button>
+        </div>
+      </div>
     {{/each}}
-  </ul>
-
+  </div>
 </div>
+<link rel="stylesheet" href="/css/home.css" />
+<script src="/js/home.js"></script>
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+  integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+  crossorigin="anonymous"
+/>
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+  crossorigin="anonymous"
+></script>

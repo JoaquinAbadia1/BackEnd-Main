@@ -5,9 +5,7 @@ import viewsRouter from "./src/Router/views.routes.js";
 import { engine } from "express-handlebars";
 import { createServer } from "http";
 import __dirname from "./src/utils.js";
-import { guardarProducto } from "./src/utils.js";
 import { Server } from "socket.io";
-import userRouter from "./src/Router/users.routes.js";
 import * as dotenv from "dotenv";
 import mongoose from "mongoose";
 import Message from "./src/models/chat.models.js";
@@ -37,8 +35,7 @@ app.use("/api/products", productRouter);
 app.use("/api/cart", cartRouter);
 // api de las views
 app.use("/api/views", viewsRouter);
-//api de usuarios
-app.use("/api/users", userRouter);
+
 // Configurar el directorio estático para archivos públicos
 app.use(express.static("public"));
 
@@ -66,9 +63,11 @@ io.on("connection", (socket) => {
   });
 
   // Escuchar evento 'agregarProducto' y emitir 'nuevoProductoAgregado'
-  socket.on("agregarProducto", (newProduct) => {
+  socket.on("agregarProducto", async (newProduct) => {
     //console.log("Nuevo producto recibido backend:", newProduct);
-    guardarProducto(newProduct);
+    const product = new productModel(newProduct);
+    const productSave = await product.save();
+    console.log(productSave);
     // Agregar el nuevo producto a la lista de productos
     io.emit("nuevoProductoAgregado", newProduct);
   });

@@ -1,11 +1,14 @@
 import { Router } from "express";
 import __dirname from "../utils.js";
-import { obtenerListaDeProductos } from "../utils.js";
+
 import productModel from "../models/products.models.js";
 let homeRouter = Router();
+import productManager from "../clases/productManager.js";
 
+const product = new productManager();
 homeRouter.get("/", async (req, res) => {
-  const products = obtenerListaDeProductos();
+  const products = await product.getProducts();
+  //console.log(products);
   const { page = 1 } = req.query;
 
   const { docs, hasPrevPage, hasNextPage, nextPage, prevPage } =

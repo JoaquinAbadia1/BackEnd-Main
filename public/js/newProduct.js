@@ -12,15 +12,15 @@ document.getElementById("productForm").addEventListener("submit", (event) => {
   const productStock = document.getElementById("productStock").value;
   const productCode = document.getElementById("productCode").value;
 
-  console.log(
-    "Nuevo producto agregado:",
-    productTitle,
-    productDescription,
-    productPrice,
-    productThumbnail,
-    productStock,
-    productCode
-  );
+  // console.log(
+  //   "Nuevo producto agregado:",
+  //   productTitle,
+  //   productDescription,
+  //   productPrice,
+  //   productThumbnail,
+  //   productStock,
+  //   productCode
+  // );
   // Enviar el producto al servidor a través del socket
   socket.emit("agregarProducto", {
     title: productTitle,

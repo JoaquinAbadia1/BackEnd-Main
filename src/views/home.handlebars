@@ -1,14 +1,53 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="http://localhost:8080/">Home</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarText"
+      aria-controls="navbarText"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="http://localhost:8080/api/views/chat"
+          >chat</a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="http://localhost:8080/api/views/newproduct"
+          >Nuevo Producto</a>
+        </li>
+      </ul>
+      <span class="navbar-text">
+        <a href="http://localhost:8080/api/cart/">🛒</a>
+        <button></button>
+      </span>
+    </div>
+  </div>
+</nav>
 <h1>Todos los Productos</h1>
 <div class="contenedor">
 
   {{#each products}}
 
-    <div class="card" style="width: 18rem;">
-      <img src="{{thumbnail}}" class="card-img-top" alt="..." />
+    <div class="card">
+      <img src="{{thumbnail}}" class="card-img-top" alt="{{title}}" />
       <div class="card-body">
         <h5 class="card-title">{{title}}</h5>
         <p class="card-text">{{description}}</p>
-        <p>{{price}}</p>
+        <p>US$: {{price}}</p>
         <button
           class="btn btn-primary"
           data-id="addtocart"
