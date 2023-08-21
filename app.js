@@ -49,7 +49,7 @@ const io = new Server(httpServer);
 let messages = [];
 // Configurar el evento de conexión de Socket.IO
 io.on("connection", (socket) => {
-  console.log("Nuevo cliente conectado!");
+  //console.log("Nuevo cliente conectado!");
 
   socket.on("chat message", async (msg) => {
     // Crea un nuevo mensaje y guárdalo en la base de datos
@@ -82,7 +82,7 @@ io.on("connection", (socket) => {
   */
 
   socket.on("disconnect", () => {
-    console.log("Cliente desconectado");
+    //console.log("Cliente desconectado");
   });
 });
 
@@ -93,6 +93,7 @@ let dbConnect = mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+mongoose.set("strictQuery", true);
 
 dbConnect.then(
   () => {

@@ -4,12 +4,17 @@ import productModel from "../models/products.models.js";
 
 const productRouter = Router();
 
-const product = new productManager("./products.json");
-
 productRouter.get("/:id", async (req, res) => {
   let idParam = req.params.code;
   const findById = productModel.findById(idParam);
   res.json(findById);
+});
+
+productRouter.get("/", async (req, res) => {
+  const limit = req.params.limit || 10;
+  const allProducts = await productModel.paginate({}, { limit });
+
+  res.json(allProducts);
 });
 
 productRouter.post("/addnewProduct", async (req, res) => {});

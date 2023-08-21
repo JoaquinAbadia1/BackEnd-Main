@@ -4,12 +4,12 @@ class productManager {
   products;
   product;
   #path = "";
-  constructor(path) {
-    this.#path = path;
-  }
+  constructor() {}
   async getProducts() {
     try {
       const products = await productModel.find().lean();
+      const productsLimited = products.paginate({}, limit);
+      console.log(products);
       return products;
     } catch {
       return [];
