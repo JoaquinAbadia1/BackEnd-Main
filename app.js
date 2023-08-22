@@ -11,11 +11,16 @@ import mongoose from "mongoose";
 import Message from "./src/models/chat.models.js";
 import homeRouter from "./src/Router/home.routes.js";
 import productModel from "./src/models/products.models.js";
+import usersRouter from "./src/Router/user.routes.js";
+import sessionRouter from "./src/Router/session.routes.js";
+import MongoStore from "connect-mongo";
+import session from "express-session";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 const app = express();
 const httpserver = createServer(app);
-const PORT = 8080;
+const PORT = process.env.PORT;
 // escucha del servidor
 const httpServer = app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
@@ -35,6 +40,10 @@ app.use("/api/products", productRouter);
 app.use("/api/cart", cartRouter);
 // api de las views
 app.use("/api/views", viewsRouter);
+//api de users
+app.use("/api/users", usersRouter);
+//api de sesiones
+app.use("/api/sessions", sessionRouter);
 
 // Configurar el directorio estático para archivos públicos
 app.use(express.static("public"));
@@ -71,23 +80,12 @@ io.on("connection", (socket) => {
     // Agregar el nuevo producto a la lista de productos
     io.emit("nuevoProductoAgregado", newProduct);
   });
-
-  /*socket.on("productoEliminado", (productID) => {
-    // Eliminar el producto de la lista en el cliente
-    const productoElement = document.querySelector(`[data-id="${productID}"]`);
-    if (productoElement) {
-      productoElement.parentElement.remove();
-    }
-  });
-  */
-
   socket.on("disconnect", () => {
     //console.log("Cliente desconectado");
   });
 });
 
 // Conexión a la base de datos
-
 const MONGO_URI = process.env.MONGO_URI;
 let dbConnect = mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,
@@ -102,4 +100,20 @@ dbConnect.then(
   (error) => {
     console.log("Error en la conexión a la base de datos", error);
   }
+);
+
+app.use(
+  session({
+    store: MongoStore.create({
+      mongoUrl: MONGO_URI,
+      mongoOptions: {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      },
+      ttl: 30,
+    }),
+    secret: "codersecret",
+    resave: false,
+    saveUninitialized: false,
+  })
 );
