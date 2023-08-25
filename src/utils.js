@@ -8,7 +8,8 @@ const __dirname = dirname(__filename);
 export const createHash = (password) =>
   bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 
-export const isValidPassword = (savedPassword, password) =>
-  bcrypt.compareSync(savedPassword, password);
+export const isValidPassword = (savedPassword, password) => {
+  return bcrypt.compareSync(savedPassword, password);
+};
 
 export default __dirname;

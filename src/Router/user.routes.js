@@ -13,5 +13,10 @@ usersRouter.get("/signup", (req, res) => {
     title: "Crea tu cuenta",
   });
 });
+usersRouter.get("/forgotpassword", (req, res) => {
+  res.render("forgotPassword", {
+    title: "Recupera tu contraseña",
+  });
+});
 
 export default usersRouter;
