@@ -15,7 +15,8 @@ import usersRouter from "./src/Router/user.routes.js";
 import sessionRouter from "./src/Router/session.routes.js";
 import MongoStore from "connect-mongo";
 import session from "express-session";
-import cookieParser from "cookie-parser";
+import passport from "passport";
+import initializePassport from "./src/config/passport.config.js";
 
 dotenv.config();
 const app = express();
@@ -117,3 +118,6 @@ app.use(
     saveUninitialized: false,
   })
 );
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());

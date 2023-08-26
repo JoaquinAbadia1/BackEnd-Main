@@ -1,47 +1,38 @@
 import { Router } from "express";
 import userModel from "../models/user.models.js";
 import { createHash, isValidPassword } from "../utils.js";
+import passport from "passport";
 
 const sessionRouter = Router();
-sessionRouter.post("/login", async (req, res) => {
-  const { username, password } = req.body;
+sessionRouter.post(
+  "/login",
+  passport.authenticate("login", {}),
+  async (req, res) => {
+    if (!req.user) {
+      return res.status(401).json("error de autendicacions");
+    } else {
+      req.session.user = {
+        username: req.user.username,
+        password: req.user.password,
+        email: req.user.email,
+        age: req.user.age,
+      };
 
-  const result = await userModel.find({
-    username: username,
-  });
-  console.log(isValidPassword(result[0].password, password));
-  console.log(result);
-  if (result.length === 0)
-    return res.status(401).json({
-      respuesta: "error",
-    });
-  else if (!isValidPassword(result[0].password, password)) {
-    return res.status(401).json({
-      respuesta: "El Usuario no existe",
-    });
-  } else {
-    req.session.user = username;
-    req.session.admin = true;
-    res.status(200).json({
-      respuesta: "ok",
-    });
+      res.send({ status: "success", message: "user logged in successfully" });
+    }
   }
-});
-sessionRouter.post("/signup", async (req, res) => {
-  const { username, password, age, email } = req.body;
-
-  const result = await userModel.create({
-    username,
-    age,
-    email,
-    password: createHash(password),
-  });
-
-  if (result === null) {
-    return res.status(401).json({
-      respuesta: "error",
-    });
+);
+sessionRouter.post(
+  "/signup",
+  passport.authenticate("signup", {
+    failureRedirect: "/fail",
+  }),
+  async (req, res) => {
+    res.send({ status: "success", message: "success registered" });
   }
+);
+sessionRouter.get("/fail", async (req, res) => {
+  res.send({ status: "error", message: "failed" });
 });
 sessionRouter.post("/forgot", async (req, res) => {
   const { username, newPassword } = req.body;
