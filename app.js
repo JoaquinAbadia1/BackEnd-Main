@@ -22,12 +22,32 @@ dotenv.config();
 const app = express();
 const httpserver = createServer(app);
 const PORT = process.env.PORT;
+const MONGO_URI = process.env.MONGO_URI;
 // escucha del servidor
 const httpServer = app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
 // Apertura del servidor
 httpServer.on("error", (err) => console.log(err));
+//sessin con mongo
+app.use(
+  session({
+    store: MongoStore.create({
+      mongoUrl: MONGO_URI,
+      mongoOptions: {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      },
+      ttl: 100,
+    }),
+    secret: "codersecret",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Configurar el middleware para manejar las solicitudes JSON
 app.use(express.urlencoded({ extended: true }));
@@ -87,7 +107,7 @@ io.on("connection", (socket) => {
 });
 
 // Conexión a la base de datos
-const MONGO_URI = process.env.MONGO_URI;
+
 let dbConnect = mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -102,22 +122,3 @@ dbConnect.then(
     console.log("Error en la conexión a la base de datos", error);
   }
 );
-
-app.use(
-  session({
-    store: MongoStore.create({
-      mongoUrl: MONGO_URI,
-      mongoOptions: {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      },
-      ttl: 30,
-    }),
-    secret: "codersecret",
-    resave: false,
-    saveUninitialized: false,
-  })
-);
-initializePassport();
-app.use(passport.initialize());
-app.use(passport.session());

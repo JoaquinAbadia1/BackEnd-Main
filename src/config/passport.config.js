@@ -41,8 +41,8 @@ const initializePassport = () => {
       { usernameField: "username" },
       async (username, password, done) => {
         try {
-          const user = await userModel.findOne({ username: username });
-          //console.log(user);
+          const user = await userModel.findOne({ username });
+          console.log(user);
           if (!user) {
             return done(null, false, { message: "el usuario no existe" });
           }
@@ -61,8 +61,8 @@ const initializePassport = () => {
     done(null, user._id);
   });
   passport.deserializeUser(async (id, done) => {
-    let userById = await userModel.findById(id);
-    done(null, userById);
+    let user = await userModel.findById(id);
+    done(null, user);
   });
 };
 export default initializePassport;
