@@ -4,6 +4,19 @@ import { createHash, isValidPassword } from "../utils.js";
 import passport from "passport";
 
 const sessionRouter = Router();
+function auth(req, res, next) {
+  //console.log(req.session);
+  if (req.session?.user && req.session?.admin) {
+    return next();
+  }
+  return res.status(401).json("error de autenticacion");
+}
+sessionRouter.get("/privado", auth, (req, res) => {
+  res.render("topsecret", {
+    nombre: req.session.user.first_name,
+    apellido: req.session.user.last_name,
+  });
+});
 sessionRouter.post(
   "/login",
   passport.authenticate("login", {}),
@@ -53,4 +66,21 @@ sessionRouter.post("/forgot", async (req, res) => {
     });
   }
 });
+
+// Iniciar sesion con GitHub API
+sessionRouter.get(
+  "/github",
+  passport.authenticate("github", { scope: ["user:username"] }),
+  async (req, res) => {}
+);
+//en caso de que falle el login con GitHub
+sessionRouter.get(
+  "/githubcallback",
+  passport.authenticate("github", { failureRedirect: "/login" }),
+  async (req, res) => {
+    req.session.user = req.user;
+    req.session.admin = true;
+    res.redirect("/");
+  }
+);
 export default sessionRouter;

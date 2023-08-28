@@ -29,7 +29,7 @@ const httpServer = app.listen(PORT, () => {
 });
 // Apertura del servidor
 httpServer.on("error", (err) => console.log(err));
-//sessin con mongo
+//session con mongo
 app.use(
   session({
     store: MongoStore.create({
