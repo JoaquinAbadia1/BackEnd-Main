@@ -17,6 +17,7 @@ import MongoStore from "connect-mongo";
 import session from "express-session";
 import passport from "passport";
 import initializePassport from "./src/config/passport.config.js";
+import { generateToken, authToken } from "./src/utils.js";
 
 dotenv.config();
 const app = express();
@@ -48,6 +49,9 @@ app.use(
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
+
+//JWT
+const PRIVATE_KEY = "privateKey";
 
 // Configurar el middleware para manejar las solicitudes JSON
 app.use(express.urlencoded({ extended: true }));
