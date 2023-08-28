@@ -1,5 +1,5 @@
 {
 "instalar" : "npm i -y",
-"dependencias": "npm i bcrypt bootstrap connect-mongo cookie-parser dotenv express express-handlebars express-session mongoose mongoose-paginate-v2 nodemon session-file-store socket.io passport passport-local",
+"dependencias": "npm i bcrypt bootstrap connect-mongo cookie-parser dotenv express express-handlebars express-session mongoose mongoose-paginate-v2 nodemon session-file-store socket.io passport passport-local passport-github2",
 "iniciar": "npm start"
 }
