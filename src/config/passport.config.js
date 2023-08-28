@@ -4,6 +4,7 @@ import GitHubStrategy from "passport-github2";
 import userModel from "../models/user.models.js";
 import { createHash, isValidPassword } from "../utils.js";
 import * as dotenv from "dotenv";
+import crypto from "crypto";
 
 dotenv.config();
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
@@ -77,7 +78,7 @@ const initializePassport = () => {
     "github",
     new GitHubStrategy(
       {
-        clientId: GITHUB_CLIENT_ID,
+        clientID: GITHUB_CLIENT_ID,
         clientSecret: GITHUB_CLIENT_SECRET,
         callbackURL: GITHUB_CALLBACK_URL,
       },
@@ -90,7 +91,7 @@ const initializePassport = () => {
             const newUser = {
               username: profile.displayName,
               email: profile?.emails[0]?.value,
-              password: "",
+              password: crypto.randomBytes(20).toString("hex"),
               age: 99,
             };
             let result = await userModel.create(newUser);
