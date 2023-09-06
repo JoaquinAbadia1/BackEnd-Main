@@ -3,7 +3,7 @@ import __dirname from "../utils.js";
 
 import productModel from "../models/products.models.js";
 let homeRouter = Router();
-import productManager from "../clases/productManager.js";
+import productManager from "../Manager/productManager.js";
 
 const product = new productManager();
 homeRouter.get("/", async (req, res) => {

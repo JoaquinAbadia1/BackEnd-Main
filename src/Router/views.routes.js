@@ -2,7 +2,7 @@ import { Router } from "express";
 import __dirname from "../utils.js";
 
 import Message from "../models/chat.models.js";
-import productManager from "../clases/productManager.js";
+import productManager from "../Manager/productManager.js";
 
 const product = new productManager();
 
