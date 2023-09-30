@@ -1,34 +1,36 @@
 import { Router } from "express";
+import productManager from "../controller/productManager.js";
 //import productManager from "../Manager/productManager";
-import productModel from "../models/products.models.js";
+import productModel from "../dao/mongo/models/products.models.js";
 
 const productRouter = Router();
 
-productRouter.get("/:id", async (req, res) => {
-  let idParam = req.params.code;
-  const findById = productModel.findById(idParam);
-  res.json(findById);
+productRouter.get("/:code", async (req, res) => {
+  const code = req.params.code;
+  const product = await productManager.getProductByCode(code);
+  res.json(product);
 });
 
 productRouter.get("/", async (req, res) => {
-  const limit = req.params.limit || 10;
-  const allProducts = await productModel.paginate({}, { limit });
-
-  res.json(allProducts);
+  const products = await productManager.getProducts();
+  res.json(products);
 });
 
-productRouter.post("/addnewProduct", async (req, res) => {});
+productRouter.post("/addnewProduct", async (req, res) => {
+  const product = req.body;
+  const newProduct = await productManager.addProduct(product);
+  res.json(newProduct);
+});
 
-productRouter.put("/:code", async (req, res) => {});
-productRouter.delete("/productos/:id", async (req, res) => {
-  try {
-    const producto = await productModel.findByIdAndRemove(req.params.id);
-    if (!producto) {
-      return res.status(404).send("Producto no encontrado");
-    }
-    return res.status(200).send("Producto eliminado correctamente");
-  } catch (error) {
-    return res.status(500).send("Error al eliminar el producto");
-  }
+productRouter.put("/:code", async (req, res) => {
+  const code = req.params.code;
+  const modified = req.body;
+  const product = await productManager.updateProductByCode(code, modified);
+  res.json(product);
+});
+productRouter.delete("/productos/:code", async (req, res) => {
+  const code = req.params.code;
+  const product = await productManager.deleteProduct(code);
+  res.json(product);
 });
 export default productRouter;

@@ -1,5 +1,5 @@
 import fs from "fs";
-import productModel from "../models/products.models.js";
+import productModel from "../dao/mongo/models/products.models.js";
 class productManager {
   products;
   product;
@@ -15,8 +15,8 @@ class productManager {
   }
 
   async addProduct(product) {
-    const allProducts = await productModel.find().lean();
-    //console.log(allProducts);
+    const newProduct = await productModel.create(product);
+    return newProduct;
   }
 
   async getProductsByCode(code) {
@@ -24,8 +24,14 @@ class productManager {
     return productById;
   }
 
-  async deleteProduct(code) {}
-  async updateProdcutByCode(code, modified) {}
+  async deleteProduct(code) {
+    const productById = await productModel.findByIdAndDelete(code);
+    return productById;
+  }
+  async updateProdcutByCode(code, modified) {
+    const productById = await productModel.findByIdAndUpdate(code, modified);
+    return productById;
+  }
 }
 
 export default productManager;
