@@ -17,7 +17,7 @@ import MongoStore from "connect-mongo";
 import session from "express-session";
 import passport from "passport";
 import initializePassport from "./src/config/passport.config.js";
-import { generateToken, authToken } from "./src/utils.js";
+import MongoSingleton from "./src/MongoSingleton.js";
 
 dotenv.config();
 const app = express();
