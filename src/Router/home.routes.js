@@ -3,7 +3,7 @@ import __dirname from "../utils.js";
 
 import productModel from "../dao/mongo/models/products.models.js";
 let homeRouter = Router();
-import productManager from "../controller/productManager.js";
+import productManager from "../dao/mongo/controller/productManager.js";
 
 const product = new productManager();
 homeRouter.get("/", async (req, res) => {

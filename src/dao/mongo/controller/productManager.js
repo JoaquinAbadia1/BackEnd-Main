@@ -1,5 +1,5 @@
 import fs from "fs";
-import productModel from "../dao/mongo/models/products.models.js";
+import productModel from "../models/products.models.js";
 class productManager {
   products;
   product;

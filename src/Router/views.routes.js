@@ -2,7 +2,7 @@ import { Router } from "express";
 import __dirname from "../utils.js";
 
 import Message from "../dao/mongo/models/chat.models.js";
-import productManager from "../controller/productManager.js";
+import productManager from "../dao/mongo/controller/productManager.js";
 
 const product = new productManager();
 
