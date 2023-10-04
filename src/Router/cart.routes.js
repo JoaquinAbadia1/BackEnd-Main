@@ -2,64 +2,65 @@ import { Router } from "express";
 import cartManager from "../dao/mongo/controller/cartManager.js";
 
 const cartRouter = Router();
-const cart = new cartManager("./carts.json");
-
+const carts = new cartManager();
+//nuevo carrito
 cartRouter.post("/newCart", async (req, res) => {
   try {
-    await cart.newCart();
-    res.json({
-      status: "200 ok",
-      message: `el carrito se añadio correctamente`,
-    });
+    let cart = await carts.newCart();
+    res.json({ message: "carrito creado", cart });
   } catch (err) {
-    throw new Error(err);
+    console.log(err);
   }
 });
+//agregar producto al carrito
 cartRouter.post("/:cid/product/:pcode", async (req, res) => {
-  const idCart = Number(req.params.cid);
-  const codeProduct = Number(req.params.pcode);
-  try {
-    const productAdd = await cart.addProductToCart(idCart, codeProduct);
-    res.json({ status: "200 ok", message: productAdd });
-  } catch (error) {
-    throw new Error(error);
-  }
-});
+  const { cid, pcode } = req.params;
 
-cartRouter.get("/:id", async (req, res) => {
-  const { id } = req.params;
   try {
-    let idParam = id;
-    res.json(await cart.getCartsById(parseInt(idParam)));
-  } catch (error) {
-    throw new Error(error);
-  }
-});
-
-cartRouter.get("/", async (req, res) => {
-  const { limit } = req.query;
-  try {
-    let carts = await cart.getCarts();
-    if (limit) {
-      let temp = carts.filter((dat, index) => index < limit);
-      res.json({ dat: temp, limit: limit, quantity: temp.length });
+    let cart = await carts.getCartsById(cid);
+    if (!cart) {
+      res.status(404).json({ error: "carrito no encontrado" });
     } else {
-      res.json(carts);
+      let result = await carts.addProductToCart(cid, parseInt(pcode));
+      res.json({ message: "producto agregado", result });
     }
   } catch (err) {
     console.log(err);
   }
 });
-cartRouter.delete("/:id", async (req, res) => {
-  const carts = new cartManager("./carts.json");
+// carrito por id
+cartRouter.get("/:id", async (req, res) => {
   let idParam = req.params.id;
-  let cart = await carts.getCartsById(parseInt(idParam));
-  if (!cart) {
-    message = "carrito no encontrado";
-  } else {
-    let result = await carts.deleteCart(parseInt(idParam));
-    res.json({ message: "carrito eliminado", result });
+  try {
+    let cart = await carts.getCartsById(idParam);
+    if (!cart) {
+      res.status(404).json({ error: "carrito no encontrado" });
+    } else {
+      res.json(cart);
+    }
+  } catch (err) {
+    console.log(err);
   }
+});
+//todos los carritos
+cartRouter.get("/", async (req, res) => {
+  const { limit } = req.query;
+  try {
+    let allCarts = await carts.getCarts();
+    if (limit) {
+      let temp = allCarts.filter((dat, index) => index < limit);
+      res.json({ dat: temp, limit: limit, quantity: temp.length });
+    } else {
+      res.json(allCarts);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+//eliminar carrito por id
+cartRouter.delete("/:id", async (req, res) => {
+  let cart = await carts.deleteCart(req.params.id);
+  res.json({ message: "carrito eliminado", cart });
 });
 cartRouter.put("/", async (req, res) => {
   try {

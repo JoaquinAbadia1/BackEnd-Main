@@ -11,7 +11,6 @@ import mongoose from "mongoose";
 import Message from "./src/dao/mongo/models/chat.models.js";
 import homeRouter from "./src/Router/home.routes.js";
 import productModel from "./src/dao/mongo/models/products.models.js";
-import usersRouter from "./src/Router/user.routes.js";
 import sessionRouter from "./src/Router/session.routes.js";
 import MongoStore from "connect-mongo";
 import session from "express-session";
@@ -65,8 +64,6 @@ app.use("/api/products", productRouter);
 app.use("/api/cart", cartRouter);
 // api de las views
 app.use("/api/views", viewsRouter);
-//api de users
-app.use("/api/users", usersRouter);
 //api de sesiones
 app.use("/api/sessions", sessionRouter);
 

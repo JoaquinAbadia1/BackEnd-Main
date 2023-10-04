@@ -53,4 +53,20 @@ sessionRouter.post("/forgot", async (req, res) => {
     });
   }
 });
+// Iniciar sesion con GitHub API
+sessionRouter.get(
+  "/github",
+  passport.authenticate("github", { scope: ["user:username"] }),
+  async (req, res) => {}
+);
+//en caso de que falle el login con GitHub
+sessionRouter.get(
+  "/githubcallback",
+  passport.authenticate("github", { failureRedirect: "/login" }),
+  async (req, res) => {
+    req.session.user = req.user;
+    req.session.admin = true;
+    res.redirect("/");
+  }
+);
 export default sessionRouter;

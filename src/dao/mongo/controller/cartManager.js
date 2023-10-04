@@ -1,46 +1,29 @@
 import fs from "fs";
 import ProductManager from "./productManager.js";
+import cartModel from "../models/carts.models.js";
 
 class cartManager {
   id;
   carts;
-  #path = "";
-  constructor(path) {
-    this.#path = path;
-    this.carts = [];
+  constructor() {
     this.id = 0;
   }
   async getCarts() {
     try {
-      const carts = await fs.promises.readFile(this.#path, "utf-8");
-      //console.log(JSON.parse(carts));
-      return JSON.parse(carts);
+      const carts = cartModel.find().lean();
+      return carts;
     } catch {
       return [];
     }
   }
   async newCart() {
-    this.carts = await this.getCarts();
-    this.carts.push({ products: [], id: this.carts.length + 1 });
-    console.log(this.carts);
-    const result = await fs.promises.writeFile(
-      "./carts.json",
-      JSON.stringify(this.carts)
-    );
-    // console.log(result, "soy el result");
+    let cart = await cartModel.create([{ products: [] }]);
+    return cart;
   }
 
   async getCartsById(id) {
-    const carts = await this.getCarts();
-
-    // console.log(carts, "soy el getCarts de getCartsById");
-    const cart = carts.filter((e) => e.id === id);
-    // console.log(cart, "soy el getCartsById");
-    if (!cart || cart === undefined) {
-      throw new Error("debe ingresar un id de carrito existente");
-    } else {
-      return cart;
-    }
+    const carts = cartModel.findById(id);
+    return carts;
   }
   async addProductToCart(idCart, codeProduct) {
     let cart = await this.getCartsById(idCart);
@@ -50,23 +33,18 @@ class cartManager {
     }
     let productManager = new ProductManager();
     let products = await productManager.getProducts();
-    // let products = JSON.parse(fs.readFileSync("./products.json"));
-    // console.log(products, "soy el products");
     const product = products.filter((e) => e.code === codeProduct);
-    console.log(product, "soy el product");
-    console.log(cart, "soy el cart");
-    cart[0].products.push({
-      id: codeProduct,
-      quantity: 1,
-    });
-    fs.promises.writeFile(this.#path, JSON.stringify(cart));
+
+    const newCart = await cartModel.findByIdAndUpdate(
+      idCart,
+      { $push: { products: product } },
+      { new: true }
+    );
+    return newCart;
   }
 
   async deleteCart(id) {
-    let carts = await this.getCarts();
-    let searchIdDelete = carts.map((i) => i.id !== id);
-    await fs.promises.writeFile(this.#path, JSON.stringify(searchIdDelete));
-    console.log("carrito eliminado con éxito");
+    let cart = await cartModel.findByIdAndDelete(id);
   }
 }
 

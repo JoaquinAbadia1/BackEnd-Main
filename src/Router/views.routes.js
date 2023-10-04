@@ -20,5 +20,20 @@ viewsRouter.get("/chat", async (req, res) => {
 viewsRouter.get("/contact", async (req, res) => {
   res.render("contacto", {});
 });
+viewsRouter.get("/login", async (req, res) => {
+  res.render("login", {
+    title: "Iniciar Sesion",
+  });
+});
+viewsRouter.get("/signup", (req, res) => {
+  res.render("signup", {
+    title: "Crea tu cuenta",
+  });
+});
+viewsRouter.get("/forgotpassword", (req, res) => {
+  res.render("forgotPassword", {
+    title: "Recupera tu contraseña",
+  });
+});
 
 export default viewsRouter;

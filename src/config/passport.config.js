@@ -115,4 +115,5 @@ const initializePassport = () => {
   });
 };
 
+const initializeGithubPassport = () => {};
 export default initializePassport;
