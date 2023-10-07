@@ -4,7 +4,7 @@ import cartRouter from "./src/Router/cart.routes.js";
 import viewsRouter from "./src/Router/views.routes.js";
 import { engine } from "express-handlebars";
 import { createServer } from "http";
-import __dirname from "./src/utils.js";
+import __dirname, { createRoles } from "./src/utils.js";
 import { Server } from "socket.io";
 import * as dotenv from "dotenv";
 import mongoose from "mongoose";
@@ -20,6 +20,7 @@ import MongoSingleton from "./src/MongoSingleton.js";
 
 dotenv.config();
 const app = express();
+createRoles();
 const httpserver = createServer(app);
 const PORT = process.env.PORT;
 const MONGO_URI = process.env.MONGO_URI;
@@ -45,6 +46,7 @@ app.use(
     saveUninitialized: false,
   })
 );
+mongoose.set("strictQuery", false);
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());

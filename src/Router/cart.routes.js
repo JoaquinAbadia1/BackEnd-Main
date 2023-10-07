@@ -12,6 +12,7 @@ cartRouter.post("/newCart", async (req, res) => {
     console.log(err);
   }
 });
+
 //agregar producto al carrito
 cartRouter.post("/:cid/product/:pcode", async (req, res) => {
   const { cid, pcode } = req.params;
