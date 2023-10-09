@@ -51,9 +51,6 @@ initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
 
-//JWT
-const PRIVATE_KEY = "privateKey";
-
 // Configurar el middleware para manejar las solicitudes JSON
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

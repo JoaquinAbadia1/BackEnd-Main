@@ -1,36 +1,41 @@
 import { Router } from "express";
 import productManager from "../dao/mongo/controller/productManager.js";
-
-import productModel from "../dao/mongo/models/products.models.js";
+import { verifyToken, isAdmin } from "../middlewares/authJWT.js";
 
 const productRouter = Router();
-
+const Manager = new productManager();
+//getProductByCode
 productRouter.get("/:code", async (req, res) => {
   const code = req.params.code;
-  const product = await productManager.getProductByCode(code);
+  const product = await Manager.getProductByCode(code);
   res.json(product);
 });
-
+//getProducts
 productRouter.get("/", async (req, res) => {
-  const products = await productManager.getProducts();
+  const products = await Manager.getProducts();
   res.json(products);
 });
-
-productRouter.post("/addnewProduct", async (req, res) => {
-  const product = req.body;
-  const newProduct = await productManager.addProduct(product);
-  res.json(newProduct);
-});
-
-productRouter.put("/:code", async (req, res) => {
+//addProduct
+productRouter.post(
+  "/addnewProduct",
+  [verifyToken, isAdmin],
+  async (req, res) => {
+    const product = req.body;
+    const newProduct = await Manager.addProduct(product);
+    res.json(newProduct);
+  }
+);
+// updateProductByCode
+productRouter.put("/:code", [verifyToken, isAdmin], async (req, res) => {
   const code = req.params.code;
   const modified = req.body;
-  const product = await productManager.updateProductByCode(code, modified);
+  const product = await Manager.updateProductByCode(code, modified);
   res.json(product);
 });
-productRouter.delete("/productos/:code", async (req, res) => {
+//deleteProduct
+productRouter.delete("/:code", [verifyToken, isAdmin], async (req, res) => {
   const code = req.params.code;
-  const product = await productManager.deleteProduct(code);
+  const product = await Manager.deleteProduct(code);
   res.json(product);
 });
 export default productRouter;
