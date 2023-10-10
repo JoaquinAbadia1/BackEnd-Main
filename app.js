@@ -16,7 +16,9 @@ import MongoStore from "connect-mongo";
 import session from "express-session";
 import passport from "passport";
 import initializePassport from "./src/config/passport.config.js";
-import MongoSingleton from "./src/MongoSingleton.js";
+import MongoSingleton from "./src/services/MongoSingleton.js";
+import compression from "express-compression";
+import errorHandle from "./src/middlewares/errors.js";
 
 dotenv.config();
 const app = express();
@@ -68,12 +70,15 @@ app.use("/api/sessions", sessionRouter);
 
 // Configurar el directorio estático para archivos públicos
 app.use(express.static("public"));
+//usar compresion
+app.use(compression());
 
 // handdlebars
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", `${__dirname}/views`);
-
+//manejo de errores
+app.use(errorHandle);
 // Configuración del lado del servidor
 const io = new Server(httpServer);
 let messages = [];

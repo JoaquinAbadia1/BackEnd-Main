@@ -1,6 +1,6 @@
 {
 "instalar" : "npm i -y",
-"dependencias": "npm i bcrypt bootstrap connect-mongo cookie-parser dotenv express express-handlebars express-session mongoose mongoose-paginate-v2 nodemon session-file-store socket.io passport passport-local passport-github2 jsonwebtoken nodemailer cors morgan helmet",
+"dependencias": "npm i bcrypt bootstrap connect-mongo cookie-parser dotenv express express-handlebars express-session mongoose mongoose-paginate-v2 nodemon session-file-store socket.io passport passport-local passport-github2 jsonwebtoken nodemailer cors morgan helmet express-compression",
 "dotenv": "app touch .env",
 "iniciar": "npm start"
 }

@@ -3,12 +3,14 @@ import __dirname from "../utils.js";
 
 import Message from "../dao/mongo/models/chat.models.js";
 import productManager from "../dao/mongo/controller/productManager.js";
+import cartManager from "../dao/mongo/controller/cartManager.js";
+import { verifyToken, isAdmin } from "../middlewares/authJWT.js";
 
 const product = new productManager();
-
+const cart = new cartManager();
 let viewsRouter = Router();
 
-viewsRouter.get("/newproduct", async (req, res) => {
+viewsRouter.get("/newproduct", [verifyToken, isAdmin], async (req, res) => {
   const products = await product.getProducts();
   //console.log(products);
   res.render("newProduct", { products });
@@ -23,6 +25,15 @@ viewsRouter.get("/contact", async (req, res) => {
 viewsRouter.get("/login", async (req, res) => {
   res.render("login", {
     title: "Iniciar Sesion",
+  });
+});
+viewsRouter.get("/cart/:id", async (req, res) => {
+  const cartId = req.params.id;
+  const carts = await cart.getCartsById(cartId);
+  console.log(carts);
+  res.render("carts", {
+    title: "Carrito de compras",
+    carts,
   });
 });
 viewsRouter.get("/signup", (req, res) => {
