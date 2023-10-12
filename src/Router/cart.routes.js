@@ -29,6 +29,21 @@ cartRouter.post("/:cid/product/:pcode", async (req, res) => {
     console.log(err);
   }
 });
+//eliminar producto del carrito
+cartRouter.delete("/:cid/product/:pcode", async (req, res) => {
+  const { cid, pcode } = req.params;
+  try {
+    let cart = await carts.getCartsById(cid);
+    if (!cart) {
+      res.status(404).json({ error: "carrito no encontrado" });
+    } else {
+      let result = await carts.deleteFromCart(cid, parseInt(pcode));
+      res.json({ message: "producto eliminado", result });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
 // carrito por id
 cartRouter.get("/:id", async (req, res) => {
   let idParam = req.params.id;
@@ -66,6 +81,20 @@ cartRouter.delete("/:id", async (req, res) => {
 cartRouter.put("/", async (req, res) => {
   try {
   } catch (error) {}
+});
+cartRouter.post("/:id/order", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const cart = await carts.getCartsById(id);
+    if (!cart) {
+      res.status(404).json({ error: "carrito no encontrado" });
+    } else {
+      const result = await carts.submitOrder(id);
+      res.json({ message: "orden generada", result });
+    }
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 export default cartRouter;

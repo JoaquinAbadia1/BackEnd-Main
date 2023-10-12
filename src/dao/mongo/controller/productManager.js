@@ -71,5 +71,19 @@ class productManager {
       });
     }
   }
+  async removeStock(code, quantity) {
+    try {
+      const productById = await productModel.findById(code);
+      productById.stock -= quantity;
+      const productSave = await productById.save();
+      return productSave;
+    } catch (error) {
+      CustomError.createError({
+        name: "error en la base de datos",
+        message: "error al modificar el producto",
+        code: enumErrors.DATABASE_ERROR,
+      });
+    }
+  }
 }
 export default productManager;

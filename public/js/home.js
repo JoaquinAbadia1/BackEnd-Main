@@ -26,3 +26,35 @@ async function addToCart(code) {
     alert("Producto agregado al carrito");
   }
 }
+const deleteProduct = async (code, carrito) => {
+  try {
+    const response = await fetch(`/api/cart/${carrito}/product/${code}`, {
+      method: "DELETE",
+      headers: { "Content-type": "application/json" },
+    });
+    return response;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+const deleteFromCart = async (code) => {
+  const lsCartId = localStorage.getItem("cartId");
+  const response = await deleteProduct(code, lsCartId);
+  if (response.status === 200) {
+    alert("Producto eliminado del carrito");
+  }
+};
+const submitOrder = async () => {
+  const lsCartId = localStorage.getItem("cartId");
+  try {
+    const response = await fetch(`/api/cart/${lsCartId}/order`, {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+    });
+    if (response.status === 200) {
+      alert("Orden generada");
+    }
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};

@@ -1,6 +1,18 @@
-{{#each carts}}
+<h1>Cart</h1>
+<div>
+  {{#each cartProducts}}
 
-  <h1>{{title}}</h1>
-{{/each}}
-
+    <div>
+      <h5>{{title}}</h5>
+      <p>quantity: {{quantity}}</p>
+      <p>price: {{price}}</p>
+      <p>subtotal: {{price}}*{{quantity}}</p>
+      <button onclick="addToCart({{code}})">+</button>
+      <button onclick="deleteFromCart({{code}})">-</button>
+    </div>
+  {{/each}}
+  <h1>Total: </h1>
+  <button onclick="submitOrder()">Finalizar orden</button>
+</div>
 <script src="/js/cart.js"></script>
+<script src="/js/home.js"></script>

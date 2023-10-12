@@ -31,7 +31,7 @@ const httpServer = app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
 // Apertura del servidor
-// httpServer.on("error", (err) => console.log(err));
+httpServer.on("error", (err) => console.log(err));
 //session con mongo
 app.use(
   session({

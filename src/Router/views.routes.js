@@ -30,11 +30,10 @@ viewsRouter.get("/login", async (req, res) => {
 viewsRouter.get("/cart/:id", async (req, res) => {
   const cartId = req.params.id;
   const carts = await cart.getCartsById(cartId);
-  console.log(carts);
-  res.render("carts", {
-    title: "Carrito de compras",
-    carts,
-  });
+  const cartsParsed = JSON.parse(JSON.stringify(carts));
+  const cartProducts = cartsParsed.products;
+  //console.log(carts);
+  res.render("carts", { cartProducts });
 });
 viewsRouter.get("/signup", (req, res) => {
   res.render("signup", {
