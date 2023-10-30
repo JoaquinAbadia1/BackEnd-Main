@@ -128,7 +128,7 @@ class cartManager {
       });
     }
   }
-  submitOrder = async (idCart, order) => {
+  submitOrder = async (idCart, order, idUser) => {
     try {
       let cart = await this.getCartsById(idCart);
       if (!cart) {
@@ -138,7 +138,10 @@ class cartManager {
           code: enumErrors.NOT_FOUND_ERROR,
         });
       }
-      let orderCreate = await orderModel.create(order);
+      let orderCreate = await orderModel.create({
+        products: order,
+        user: idUser,
+      });
       cart.order = orderCreate;
       await cart.save();
       return cart;

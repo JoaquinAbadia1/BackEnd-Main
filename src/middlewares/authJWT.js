@@ -32,12 +32,16 @@ export const isAdmin = async (req, res, next) => {
   }
   return res.status(403).json({ message: "Require Admin Role!" });
 };
-export const isModerator = async (req, res, next) => {
-  // const user = await userModel.findById(req.userId);
-  // const role = await roleModel.find({ _id: { $in: user.roles } });
-  // if (role.includes("moderator")) {
-  //   next();
-  // } else {
-  //   return res.status(403).json({ message: "Require Moderator Role!" });
-  // }
+export const isPremium = async (req, res, next) => {
+  const user = await userModel.findById(req.userId);
+  //console.log(user);
+  const role = await roleModel.find({ _id: { $in: user.roles } });
+  //console.log(role);
+  for (let i = 0; i < role.length; i++) {
+    if (role[i].name === "premium") {
+      next();
+      return;
+    }
+  }
+  return res.status(403).json({ message: "Require Premium Role!" });
 };

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import productManager from "../dao/mongo/controller/productManager.js";
-import { verifyToken, isAdmin } from "../middlewares/authJWT.js";
+import { verifyToken, isAdmin, isPremium } from "../middlewares/authJWT.js";
 
 const productRouter = Router();
 const Manager = new productManager();
@@ -18,7 +18,7 @@ productRouter.get("/", async (req, res) => {
 //addProduct
 productRouter.post(
   "/addnewProduct",
-  [verifyToken, isAdmin],
+  [verifyToken, isAdmin, isPremium],
   async (req, res) => {
     const product = req.body;
     const newProduct = await Manager.addProduct(product);
@@ -26,16 +26,24 @@ productRouter.post(
   }
 );
 // updateProductByCode
-productRouter.put("/:code", [verifyToken, isAdmin], async (req, res) => {
-  const code = req.params.code;
-  const modified = req.body;
-  const product = await Manager.updateProductByCode(code, modified);
-  res.json(product);
-});
+productRouter.put(
+  "/:code",
+  [verifyToken, isAdmin, isPremium],
+  async (req, res) => {
+    const code = req.params.code;
+    const modified = req.body;
+    const product = await Manager.updateProductByCode(code, modified);
+    res.json(product);
+  }
+);
 //deleteProduct
-productRouter.delete("/:code", [verifyToken, isAdmin], async (req, res) => {
-  const code = req.params.code;
-  const product = await Manager.deleteProduct(code);
-  res.json(product);
-});
+productRouter.delete(
+  "/:code",
+  [verifyToken, isAdmin, isPremium],
+  async (req, res) => {
+    const code = req.params.code;
+    const product = await Manager.deleteProduct(code);
+    res.json(product);
+  }
+);
 export default productRouter;

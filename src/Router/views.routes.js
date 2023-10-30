@@ -40,9 +40,14 @@ viewsRouter.get("/signup", (req, res) => {
     title: "Crea tu cuenta",
   });
 });
-viewsRouter.get("/forgotpassword", (req, res) => {
-  res.render("forgotPassword", {
+viewsRouter.get("/forgotenpassword", (req, res) => {
+  res.render("forgotenPassword", {
     title: "Recupera tu contraseña",
+  });
+});
+viewsRouter.get("/createuser", [verifyToken, isAdmin], (req, res) => {
+  res.render("createUser", {
+    title: "Crea un nuevo usuario",
   });
 });
 

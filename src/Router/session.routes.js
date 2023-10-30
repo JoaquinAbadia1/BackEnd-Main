@@ -9,6 +9,8 @@ const sessionRouter = Router();
 sessionRouter.post("/login", authControler.login);
 //singUp
 sessionRouter.post("/signup", authControler.signup);
+//forgotPassword
+sessionRouter.post("/forgotPassword", authControler.forgotPassword);
 // Iniciar sesion con GitHub API
 sessionRouter.get(
   "/github",

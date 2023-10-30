@@ -15,6 +15,7 @@ export const signup = async (req, res) => {
     email,
     password: createHash(password),
     age,
+    roles,
   });
   const emailExist = await userModel.findOne({ email: email });
   const usernameExist = await userModel.findOne({ username: username });
@@ -24,22 +25,6 @@ export const signup = async (req, res) => {
       cause: generateUserErrorInfo({
         first_name,
         last_name,
-        age,
-        email,
-      }),
-      message: "Error trying to create a user",
-      code: enumErrors.INVALID_TYPE_ERROR,
-    });
-  } else if (
-    typeof username !== "string" ||
-    typeof email !== "string" ||
-    typeof password !== "string" ||
-    typeof age !== "number"
-  ) {
-    CustomError.createError({
-      name: "Error creando usuario",
-      cause: generateUserErrorInfo({
-        username,
         age,
         email,
       }),
@@ -71,6 +56,7 @@ export const signup = async (req, res) => {
 };
 export const login = async (req, res) => {
   const { username, password } = req.body;
+
   const userExist = await userModel
     .findOne({ username: username })
     .populate("roles");
@@ -92,5 +78,25 @@ export const login = async (req, res) => {
   const token = jwt.sign({ id: userExist._id }, process.env.SECRET, {
     expiresIn: 86400, // 24 hours
   });
+  localStorage.setItem("token", token);
+
   res.json({ token });
+  console.log(token);
+};
+export const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  const userExist = await userModel.findOne({ email: email });
+  if (!userExist) {
+    CustomError.createError({
+      name: "error al loguear",
+      message: "usuario no existe",
+      code: enumErrors.AUTHENTICATION_ERROR,
+    });
+  }
+  const message = { message: "email enviado" };
+  const token = jwt.sign({ id: userExist._id }, process.env.SECRET, {
+    expiresIn: 3600000, // 1 hour
+  });
+  const verificationLink = `http://localhost:8080/resetpassword/${token}`;
+  res.json({ verificationLink });
 };

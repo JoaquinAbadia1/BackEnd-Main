@@ -89,7 +89,7 @@ cartRouter.post("/:id/order", async (req, res) => {
     if (!cart) {
       res.status(404).json({ error: "carrito no encontrado" });
     } else {
-      const result = await carts.submitOrder(id);
+      const result = await carts.submitOrder(idCart, order, idUser);
       res.json({ message: "orden generada", result });
     }
   } catch (error) {
