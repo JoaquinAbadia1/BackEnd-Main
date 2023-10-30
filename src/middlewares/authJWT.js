@@ -5,7 +5,7 @@ import roleModel from "../dao/mongo/models/role.models.js";
 dotenv.config();
 export const verifyToken = async (req, res, next) => {
   try {
-    const token = req.headers["x-access-token"];
+    const token = req.localstorage.getItem("token");
     console.log(token);
     if (!token) return res.status(403).json({ message: "No token provided" });
     const decoded = jwt.verify(token, process.env.SECRET);

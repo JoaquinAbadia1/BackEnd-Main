@@ -1,9 +1,8 @@
 import ProductManager from "./productManager.js";
 import cartModel from "../models/carts.models.js";
-import CustomError, {
-  enumErrors,
-} from "../../../services/errors/customErrors.js";
+import CustomError, { enumErrors } from "../../../services/errors/customErrors.js";
 import orderModel from "../models/order.models.js";
+import nodeMailer from "nodemailer";
 class cartManager {
   id;
   carts;
@@ -131,7 +130,7 @@ class cartManager {
   submitOrder = async (idCart, order, idUser) => {
     try {
       let cart = await this.getCartsById(idCart);
-      if (!cart) {
+      if (!idCart) {
         CustomError.createError({
           name: "error en la base de datos",
           message: "no existe el carrito",
@@ -139,9 +138,10 @@ class cartManager {
         });
       }
       let orderCreate = await orderModel.create({
-        products: order,
+        products: cart,
         user: idUser,
       });
+
       cart.order = orderCreate;
       await cart.save();
       return cart;

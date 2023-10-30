@@ -5,14 +5,14 @@ import carts from "./carts.models.js";
 const oderCollection = "Orders";
 
 const orderSchema = new mongoose.Schema({
-  // products: [
-  //   {
-  //     ref: "Cart",
-  //     type: mongoose.Schema.Types.products,
-  //   },
-  // ],
+  products: [
+    {
+      ref: "carts",
+      type: mongoose.Schema.Types.ObjectId,
+    },
+  ],
   user: {
-    ref: "User",
+    ref: "users",
     type: mongoose.Schema.Types.ObjectId,
   },
   timestamp: { type: Date, default: Date.now },

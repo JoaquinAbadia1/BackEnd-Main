@@ -4,10 +4,8 @@ import jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
 import Role from "../models/role.models.js";
 import CustomError from "../../../services/errors/customErrors.js";
-import {
-  enumErrors,
-  generateUserErrorInfo,
-} from "../../../services/errors/customErrors.js";
+import { enumErrors, generateUserErrorInfo } from "../../../services/errors/customErrors.js";
+
 export const signup = async (req, res) => {
   const { username, email, password, age, roles } = req.body;
   const newUser = new userModel({
@@ -57,9 +55,7 @@ export const signup = async (req, res) => {
 export const login = async (req, res) => {
   const { username, password } = req.body;
 
-  const userExist = await userModel
-    .findOne({ username: username })
-    .populate("roles");
+  const userExist = await userModel.findOne({ username: username }).populate("roles");
   if (!userExist) {
     CustomError.createError({
       name: "error al loguear",
@@ -75,12 +71,12 @@ export const login = async (req, res) => {
       code: enumErrors.AUTHENTICATION_ERROR,
     });
   }
-  const token = jwt.sign({ id: userExist._id }, process.env.SECRET, {
-    expiresIn: 86400, // 24 hours
-  });
-  localStorage.setItem("token", token);
+  // const token = jwt.sign({ id: userExist._id }, process.env.SECRET, {
+  //   expiresIn: 86400, // 24 hours
+  // });
+  // localStorage.setItem("token", token);
 
-  res.json({ token });
+  // res.json({ token });
   console.log(token);
 };
 export const forgotPassword = async (req, res) => {

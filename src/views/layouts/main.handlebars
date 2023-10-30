@@ -20,14 +20,22 @@
       </ul>
       <div class="main">
         <a href="http://localhost:8080/api/views/login" class="user" ><i class="ri-user-line" ></i>Sing in</a>
-        <a href="" class="cart"><i class="ri-shopping-cart-line" ></i></a>
+        <a href=`#` onclick="cart()" class="cart"><i class="ri-shopping-cart-line" ></i></a>
         <div class="bx bx-menu" id="menu-icon"><i class="ri-menu-line" ></i></div>
       </div>
     </header>
     {{{body}}}
   </body>
   <script src="/socket.io/socket.io.js"></script>
-
+  <script>
+    const cart = () =>{
+      const Cart = localStorage.getItem("cartId");
+    console.log(Cart);
+    window.location.href = `http://localhost:8080/api/views/cart/${Cart}`;
+    
+    }
+  </script>
+  <script src="/js/home.js"></script>
   <script src="/js/newProduct.js"></script>
 
 </html>

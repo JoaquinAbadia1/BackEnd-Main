@@ -85,11 +85,13 @@ cartRouter.put("/", async (req, res) => {
 cartRouter.post("/:id/order", async (req, res) => {
   try {
     const { id } = req.params;
-    const cart = await carts.getCartsById(id);
-    if (!cart) {
+    const { order, idUser } = req.body;
+    const idCart = await carts.getCartsById(id);
+    if (!idCart) {
       res.status(404).json({ error: "carrito no encontrado" });
     } else {
       const result = await carts.submitOrder(idCart, order, idUser);
+      //console.log("orden generada", result);
       res.json({ message: "orden generada", result });
     }
   } catch (error) {
