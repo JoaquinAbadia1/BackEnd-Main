@@ -1,8 +1,9 @@
-import ProductManager from "./productManager.js";
+import ProductManager from "./productController.js";
 import cartModel from "../models/carts.models.js";
 import CustomError, { enumErrors } from "../../../services/errors/customErrors.js";
 import orderModel from "../models/order.models.js";
 import nodeMailer from "nodemailer";
+import { transporter } from "../../../config/mailing.config.js";
 class cartManager {
   id;
   carts;
@@ -138,12 +139,27 @@ class cartManager {
         });
       }
       let orderCreate = await orderModel.create({
-        products: cart,
+        products: cart.products,
         user: idUser,
+      });
+      await transporter.sendMail({
+        from: '"Resumen de Compra" <abadiajoaquin04@gmail.com>', // sender address
+        to: "joaquinabadia04@gmail.com", // list of receivers
+        subject: "Resumen de Compra", // Subject line
+        text: "Muchas gracias por comprar en GameFusion, que disfrutes tu compra", // plain text body
+        html: `
+          <h1>Gracias por su compra</h1>
+          <h3>Detalles de su compra</h3>
+          <ul>
+            <li>Productos: ${orderCreate.cart}</li>
+            <li>Usuario: ${orderCreate.user}</li>
+          </ul>
+          `, // html body
       });
 
       cart.order = orderCreate;
       await cart.save();
+
       return cart;
     } catch {
       CustomError.createError({

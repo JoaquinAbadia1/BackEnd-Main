@@ -2,8 +2,8 @@ import { Router } from "express";
 import __dirname from "../utils.js";
 
 import Message from "../dao/mongo/models/chat.models.js";
-import productManager from "../dao/mongo/controller/productManager.js";
-import cartManager from "../dao/mongo/controller/cartManager.js";
+import productManager from "../dao/mongo/controller/productController.js";
+import cartManager from "../dao/mongo/controller/cartController.js";
 import { verifyToken, isAdmin } from "../middlewares/authJWT.js";
 
 const product = new productManager();
@@ -48,6 +48,11 @@ viewsRouter.get("/forgotenpassword", (req, res) => {
 viewsRouter.get("/createuser", [verifyToken, isAdmin], (req, res) => {
   res.render("createUser", {
     title: "Crea un nuevo usuario",
+  });
+});
+viewsRouter.get("/regeneratepass/:token", (req, res) => {
+  res.render("forgotPassword", {
+    title: "Lista de usuarios",
   });
 });
 

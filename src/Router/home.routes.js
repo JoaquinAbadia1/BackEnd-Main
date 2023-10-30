@@ -3,7 +3,7 @@ import __dirname from "../utils.js";
 
 import productModel from "../dao/mongo/models/products.models.js";
 let homeRouter = Router();
-import productManager from "../dao/mongo/controller/productManager.js";
+import productManager from "../dao/mongo/controller/productController.js";
 
 const product = new productManager();
 homeRouter.get("/", async (req, res) => {
@@ -11,8 +11,7 @@ homeRouter.get("/", async (req, res) => {
   //console.log(products);
   const { page = 1 } = req.query;
 
-  const { docs, hasPrevPage, hasNextPage, nextPage, prevPage } =
-    await productModel.paginate({}, { limit: 5, page, lean: true });
+  const { docs, hasPrevPage, hasNextPage, nextPage, prevPage } = await productModel.paginate({}, { limit: 5, page, lean: true });
 
   res.render("home", {
     docs,

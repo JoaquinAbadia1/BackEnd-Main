@@ -5,7 +5,7 @@ import * as dotenv from "dotenv";
 import Role from "../models/role.models.js";
 import CustomError from "../../../services/errors/customErrors.js";
 import { enumErrors, generateUserErrorInfo } from "../../../services/errors/customErrors.js";
-
+import { transporter } from "../../../config/mailing.config.js";
 export const signup = async (req, res) => {
   const { username, email, password, age, roles } = req.body;
   const newUser = new userModel({
@@ -77,7 +77,7 @@ export const login = async (req, res) => {
   // localStorage.setItem("token", token);
 
   // res.json({ token });
-  console.log(token);
+  // console.log(token);
 };
 export const forgotPassword = async (req, res) => {
   const { email } = req.body;
@@ -93,6 +93,15 @@ export const forgotPassword = async (req, res) => {
   const token = jwt.sign({ id: userExist._id }, process.env.SECRET, {
     expiresIn: 3600000, // 1 hour
   });
-  const verificationLink = `http://localhost:8080/resetpassword/${token}`;
+  const verificationLink = `http://localhost:8080/api/views/regeneratepass/${token}`;
+  await transporter.sendMail({
+    from: '"restablecer contraseña" <abadiajoaquin04@gmail.com>', // sender address
+    to: "joaquinabadia04@gmail.com", // list of receivers
+    subject: "restablecer contraseña", // Subject line
+    html: `
+      <p>Para recuperar tu contraseña haz click en el siguiente link</p>
+      <a href="${verificationLink}">Recuperar contraseña</a>
+      `, // html body
+  });
   res.json({ verificationLink });
 };
