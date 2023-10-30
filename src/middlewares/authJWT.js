@@ -2,10 +2,12 @@ import jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
 import userModel from "../dao/mongo/models/user.models.js";
 import roleModel from "../dao/mongo/models/role.models.js";
+import * as cookie from "cookie";
 dotenv.config();
 export const verifyToken = async (req, res, next) => {
   try {
-    const token = req.localstorage.getItem("token");
+    const cookies = cookie.parse(req.headers.cookie || "");
+    const token = cookies.token;
     console.log(token);
     if (!token) return res.status(403).json({ message: "No token provided" });
     const decoded = jwt.verify(token, process.env.SECRET);

@@ -2,6 +2,7 @@ import userModel from "../models/user.models.js";
 import { createHash, isValidPassword } from "../../../utils.js";
 import jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
+import * as cookie from "cookie";
 import Role from "../models/role.models.js";
 import CustomError from "../../../services/errors/customErrors.js";
 import { enumErrors, generateUserErrorInfo } from "../../../services/errors/customErrors.js";
@@ -71,13 +72,21 @@ export const login = async (req, res) => {
       code: enumErrors.AUTHENTICATION_ERROR,
     });
   }
-  // const token = jwt.sign({ id: userExist._id }, process.env.SECRET, {
-  //   expiresIn: 86400, // 24 hours
-  // });
-  // localStorage.setItem("token", token);
+  const token = jwt.sign({ id: userExist._id }, process.env.SECRET, {
+    expiresIn: 86400, // 24 hours
+  });
 
-  // res.json({ token });
-  // console.log(token);
+  // Establecer una cookie llamada "token" con el valor del token
+  res.setHeader(
+    "Set-Cookie",
+    cookie.serialize("token", token, {
+      httpOnly: true, // Para que la cookie no sea accesible desde JavaScript en el navegador
+      maxAge: 86400, // Tiempo de expiración en segundos (aquí, 24 horas)
+      path: "/", // La cookie estará disponible en todas las rutas del sitio
+    })
+  );
+  console.log(token);
+  res.json({ token });
 };
 export const forgotPassword = async (req, res) => {
   const { email } = req.body;

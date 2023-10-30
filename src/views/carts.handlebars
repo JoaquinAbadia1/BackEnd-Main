@@ -1,19 +1,26 @@
 <h1>Cart</h1>
 <div>
+  <button class="Vaciar">Vaciar Carrito</button>
   {{#each cartProducts}}
 
-    <div>
-      <h5>{{title}}</h5>
-      <p>quantity: {{quantity}}</p>
-      <p>price: {{price}}</p>
-      <p>subtotal: {{price}}*{{quantity}}</p>
-      <button onclick="addToCart({{code}})">+</button>
-      <button onclick="deleteFromCart({{code}})">-</button>
+    <div id="numero">
+      <h5 class="product-name">{{title}}</h5>
+      <p class="product-quantity">quantity: {{quantity}}</p>
+      <p class="product-price">price: {{price}}</p>
+      <p id="subtotal" onload="subtotal()"></p>
+      <button onclick="addToCart({{code}})" class="boton">+</button>
+      <button onclick="deleteFromCart({{code}})" class="boton">-</button>
     </div>
   {{/each}}
-  <h1>Total: </h1>
-  <button onclick="submitOrder()">Finalizar orden</button>
+  <h1 id="cart-total">Total: </h1>
+
+  <button onclick="submitOrder()" id="checkout-button">Finalizar orden</button>
 </div>
-<script src="/js/cart.js"></script>
+
 <script src="/js/home.js"></script>
+<script>
+  function subtotal(){ var products = document.getElementsByClassName("product-price"); var quantity
+  =document.getElementsByClassName("product-quantity"); var subtotal = products * quantity; document.getElementById("subtotal").innerHTML =
+  "subtotal:$ " + subtotal; }
+</script>
 <link rel="stylesheet" href="/css/cart.css" />
