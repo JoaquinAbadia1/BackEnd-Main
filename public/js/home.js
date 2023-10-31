@@ -22,17 +22,14 @@ async function addToCart(code) {
     localStorage.setItem("cartId", cart.cart[0]._id);
   }
   const response = await postToCart(code, cart ? cart.cart[0]._id : lsCartId);
-  // Después de agregar el producto, actualiza el DOM con el nuevo subtotal
-  const product = cartProducts.find((product) => product.code === code);
-  const subtotalElement = document.getElementById("subtotal");
-  subtotalElement.innerText = `Subtotal: ${calculateSubtotal(product)}`;
+
   if (response.status === 200) {
     alert("Producto agregado al carrito");
   }
 }
-const deleteProduct = async (code, carrito) => {
+const deleteProduct = async (code) => {
   try {
-    const response = await fetch(`/api/cart/${carrito}/product/${code}`, {
+    const response = await fetch(`/api/products/${code}`, {
       method: "DELETE",
       headers: { "Content-type": "application/json" },
     });

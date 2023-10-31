@@ -5,8 +5,7 @@ socket.emit("connection", "nuevo cliente conectado");
 document.getElementById("productForm").addEventListener("submit", (event) => {
   event.preventDefault();
   const productTitle = document.getElementById("productTitle").value;
-  const productDescription =
-    document.getElementById("productDescription").value;
+  const productDescription = document.getElementById("productDescription").value;
   const productPrice = document.getElementById("productPrice").value;
   const productThumbnail = document.getElementById("productThumbnail").value;
   const productStock = document.getElementById("productStock").value;

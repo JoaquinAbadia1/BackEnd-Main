@@ -1,8 +1,10 @@
 import fs from "fs";
 import productModel from "../models/products.models.js";
-import CustomError, {
-  enumErrors,
-} from "../../../services/errors/customErrors.js";
+import CustomError, { enumErrors } from "../../../services/errors/customErrors.js";
+import jwt from "jsonwebtoken";
+import * as dotenv from "dotenv";
+import userModel from "../models/user.models.js";
+
 class productManager {
   products;
   product;
@@ -22,7 +24,32 @@ class productManager {
 
   async addProduct(product) {
     try {
-      const newProduct = new productModel(product);
+      dotenv.config();
+      const token = req.cookies.token;
+
+      const decodedToken = jwt.verify(token, process.env.SECRET);
+
+      // Realiza una consulta a la base de datos para obtener el nombre de usuario a partir del ID del usuario
+      const user = await userModel.findById(decodedToken.id);
+
+      if (!user) {
+        throw new Error("Usuario no encontrado");
+      }
+      const username = user.username; // Obtiene el nombre de usuario
+      console.log(username);
+      const newProduct = new productModel(
+        {
+          title: product.title,
+          description: product.description,
+          price: product.price,
+          thumbnail: product.thumbnail,
+          stock: product.stock,
+          code: product.code,
+          category: product.category,
+          creator: user.username,
+        },
+        { timestamps: true }
+      );
       const productSave = await newProduct.save();
       return productSave;
     } catch (error) {

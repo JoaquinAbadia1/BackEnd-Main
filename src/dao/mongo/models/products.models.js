@@ -20,6 +20,8 @@ const productSchema = new mongoose.Schema({
   category: String,
   thumbnail: String,
   category: String,
+  timestamp: { type: Date, default: Date.now },
+  creator: String,
 });
 
 productSchema.plugin(mongoosePaginate);

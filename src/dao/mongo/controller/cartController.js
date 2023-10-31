@@ -147,7 +147,7 @@ class cartManager {
     }
     const username = user.username; // Obtiene el nombre de usuario
     const email = user.email; // Obtiene el correo electrónico del usuario
-    console.log(username, email);
+    //console.log(username, email);
 
     try {
       let cart = await this.getCartsById(idCart);
@@ -162,7 +162,7 @@ class cartManager {
         products: cart.products,
         user: user.username,
       });
-      console.log(orderCreate);
+      //console.log(orderCreate);
 
       const productDetails = [];
 
@@ -183,10 +183,10 @@ class cartManager {
           productDetails.push(productInfo);
         }
       }
-      const mail = await userModel.findOne({ username: username });
+
       await transporter.sendMail({
         from: '"Resumen de Compra" <abadiajoaquin04@gmail.com>', // sender address
-        to: "joaquinabadia04@gmail.com", // list of receivers
+        to: email, // list of receivers
         subject: "Resumen de Compra", // Subject line
         text: "Muchas gracias por comprar en GameFusion, que disfrutes tu compra", // plain text body
 
@@ -211,8 +211,37 @@ class cartManager {
       `, // html body
       });
 
-      cart.order = orderCreate;
-      await cart.save();
+      // Ciclo para procesar el carrito y descontar el stock
+      async function descontarStock() {
+        for (const item of cart.products) {
+          const producto = await productModel.findOne({ code: item.code });
+
+          if (producto && producto.stock >= item.quantity) {
+            // Suficiente stock disponible
+            producto.stock -= item.quantity;
+            await producto.save();
+          } else {
+            // No hay suficiente stock, puedes manejar esto de la manera que prefieras
+            console.log(`No hay suficiente stock para ${item.title}`);
+          }
+        }
+      }
+      // Vacía el array de productos en el carrito
+      async function emptyCart(idCart) {
+        cart.products = [];
+        cart.save();
+        console.log("Carrito vaciado");
+      }
+      await descontarStock();
+      if (descontarStock() === false) {
+        throw new Error("No hay stock suficiente");
+      } else {
+        cart.order = orderCreate;
+        await cart.save();
+
+        await emptyCart();
+      }
+      console.log("Estoy aqyu");
 
       return cart;
     } catch {

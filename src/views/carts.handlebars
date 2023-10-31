@@ -1,6 +1,6 @@
 <h1>Cart</h1>
 <div>
-  <button class="Vaciar">Vaciar Carrito</button>
+  <button class="Vaciar" onclick="emptyCart(ls)">Vaciar Carrito</button>
   {{#each cartProducts}}
 
     <div id="numero">
@@ -18,5 +18,8 @@
 </div>
 
 <script src="/js/home.js"></script>
-
+<script src="../dao/mongo/controller/cartController.js"></script>
+<script>
+  const ls = localStorage.getItem('cartId');
+</script>
 <link rel="stylesheet" href="/css/cart.css" />
