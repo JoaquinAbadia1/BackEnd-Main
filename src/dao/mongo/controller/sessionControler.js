@@ -75,7 +75,7 @@ export const login = async (req, res) => {
   const token = jwt.sign({ id: userExist._id }, process.env.SECRET, {
     expiresIn: 86400, // 24 hours
   });
-
+  const email = userExist.email;
   // Establecer una cookie llamada "token" con el valor del token
   res.setHeader(
     "Set-Cookie",
@@ -85,6 +85,7 @@ export const login = async (req, res) => {
       path: "/", // La cookie estará disponible en todas las rutas del sitio
     })
   );
+
   console.log(token);
   res.json({ token });
 };

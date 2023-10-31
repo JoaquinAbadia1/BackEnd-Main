@@ -11,10 +11,8 @@ const orderSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
     },
   ],
-  user: {
-    ref: "users",
-    type: mongoose.Schema.Types.ObjectId,
-  },
+  user: { type: String, required: true },
+
   timestamp: { type: Date, default: Date.now },
 });
 

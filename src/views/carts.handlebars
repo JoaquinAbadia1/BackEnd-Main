@@ -7,7 +7,7 @@
       <h5 class="product-name">{{title}}</h5>
       <p class="product-quantity">quantity: {{quantity}}</p>
       <p class="product-price">price: {{price}}</p>
-      <p id="subtotal" onload="subtotal()"></p>
+      <p class="product-subtotal">Subtotal: </p>
       <button onclick="addToCart({{code}})" class="boton">+</button>
       <button onclick="deleteFromCart({{code}})" class="boton">-</button>
     </div>
@@ -18,9 +18,5 @@
 </div>
 
 <script src="/js/home.js"></script>
-<script>
-  function subtotal(){ var products = document.getElementsByClassName("product-price"); var quantity
-  =document.getElementsByClassName("product-quantity"); var subtotal = products * quantity; document.getElementById("subtotal").innerHTML =
-  "subtotal:$ " + subtotal; }
-</script>
+
 <link rel="stylesheet" href="/css/cart.css" />

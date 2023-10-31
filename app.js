@@ -19,10 +19,12 @@ import initializePassport from "./src/config/passport.config.js";
 import MongoSingleton from "./src/services/MongoSingleton.js";
 import compression from "express-compression";
 import errorHandle from "./src/middlewares/errors.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 const app = express();
 createRoles();
+
 const httpserver = createServer(app);
 const PORT = process.env.PORT;
 const MONGO_URI = process.env.MONGO_URI;
@@ -32,6 +34,7 @@ const httpServer = app.listen(PORT, () => {
 });
 // Apertura del servidor
 httpServer.on("error", (err) => console.log(err));
+
 //session con mongo
 app.use(
   session({
@@ -52,6 +55,7 @@ mongoose.set("strictQuery", false);
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(cookieParser());
 
 // Configurar el middleware para manejar las solicitudes JSON
 app.use(express.urlencoded({ extended: true }));

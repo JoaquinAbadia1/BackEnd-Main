@@ -2,8 +2,13 @@ import ProductManager from "./productController.js";
 import cartModel from "../models/carts.models.js";
 import CustomError, { enumErrors } from "../../../services/errors/customErrors.js";
 import orderModel from "../models/order.models.js";
-import nodeMailer from "nodemailer";
+import userModel from "../models/user.models.js";
 import { transporter } from "../../../config/mailing.config.js";
+import productModel from "../models/products.models.js";
+import * as dotenv from "dotenv";
+import jwt from "jsonwebtoken";
+import * as cookie from "cookie";
+
 class cartManager {
   id;
   carts;
@@ -128,7 +133,22 @@ class cartManager {
       });
     }
   }
-  submitOrder = async (idCart, order, idUser) => {
+  submitOrder = async (idCart, order, req) => {
+    dotenv.config();
+    const token = req.cookies.token;
+
+    const decodedToken = jwt.verify(token, process.env.SECRET);
+    //console.log(decodedToken);
+    // Realiza una consulta a la base de datos para obtener el nombre de usuario a partir del ID del usuario
+    const user = await userModel.findById(decodedToken.id);
+
+    if (!user) {
+      throw new Error("Usuario no encontrado");
+    }
+    const username = user.username; // Obtiene el nombre de usuario
+    const email = user.email; // Obtiene el correo electrónico del usuario
+    console.log(username, email);
+
     try {
       let cart = await this.getCartsById(idCart);
       if (!idCart) {
@@ -140,21 +160,55 @@ class cartManager {
       }
       let orderCreate = await orderModel.create({
         products: cart.products,
-        user: idUser,
+        user: user.username,
       });
+      console.log(orderCreate);
+
+      const productDetails = [];
+
+      // Recorre los IDs de los productos en la orden y obtén los detalles de cada producto.
+      for (const productId of orderCreate.products) {
+        const product = await productModel.findById(productId);
+
+        if (product) {
+          // Crea un objeto que contenga los detalles del producto.
+          const productInfo = {
+            title: product.title,
+            price: product.price,
+            stock: product.stock,
+            code: product.code,
+            quantity: product.quantity,
+          };
+
+          productDetails.push(productInfo);
+        }
+      }
+      const mail = await userModel.findOne({ username: username });
       await transporter.sendMail({
         from: '"Resumen de Compra" <abadiajoaquin04@gmail.com>', // sender address
         to: "joaquinabadia04@gmail.com", // list of receivers
         subject: "Resumen de Compra", // Subject line
         text: "Muchas gracias por comprar en GameFusion, que disfrutes tu compra", // plain text body
+
+        // Luego, puedes mostrar los títulos de los productos en el correo electrónico.
         html: `
-          <h1>Gracias por su compra</h1>
-          <h3>Detalles de su compra</h3>
-          <ul>
-            <li>Productos: ${orderCreate.cart}</li>
-            <li>Usuario: ${orderCreate.user}</li>
-          </ul>
-          `, // html body
+        <h1>Gracias por su compra</h1>
+        <h3>Detalles de su compra</h3>
+        <ul>
+          ${productDetails
+            .map(
+              (product) => `
+            <li>
+              Título: ${product.title}<br>
+              Precio:$ ${product.price}<br>
+              Cantidad: ${product.quantity}<br>
+            </li>
+          `
+            )
+            .join("")}
+          <li>Usuario: ${username}</li>
+        </ul>
+      `, // html body
       });
 
       cart.order = orderCreate;
