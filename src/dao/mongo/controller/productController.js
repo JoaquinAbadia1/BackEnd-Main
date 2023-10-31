@@ -63,7 +63,9 @@ class productManager {
 
   async getProductsByCode(code) {
     try {
-      const productById = await productModel.findById(code);
+      const productByCode = await productModel.findOne({ code: code });
+      const productId = productByCode._id;
+      const productById = await productModel.findById(productId);
       return productById;
     } catch {
       CustomError.createError({
@@ -76,8 +78,10 @@ class productManager {
 
   async deleteProduct(code) {
     try {
-      const productById = await productModel.findByIdAndDelete(code);
-      return productById;
+      const productByCode = await productModel.findOne({ code: code });
+      const productId = productByCode._id;
+      const deleteProductById = await productModel.findByIdAndDelete(productId);
+      return deleteProductById;
     } catch (error) {
       CustomError.createError({
         name: "error en la base de datos",

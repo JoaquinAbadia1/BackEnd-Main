@@ -1,25 +1,30 @@
+// dependencias externas
 import express from "express";
+import { Server } from "socket.io";
+import * as dotenv from "dotenv";
+import MongoStore from "connect-mongo";
+import session from "express-session";
+import passport from "passport";
+import mongoose from "mongoose";
+import { createServer } from "http";
+import { engine } from "express-handlebars";
+import cookieParser from "cookie-parser";
+import swaggerJsdoc from "swagger-jsdoc";
+import swaggerUiExpress from "swagger-ui-express";
+import cors from "cors";
+// mis dependencias locales
 import productRouter from "./src/Router/products.routes.js";
 import cartRouter from "./src/Router/cart.routes.js";
 import viewsRouter from "./src/Router/views.routes.js";
-import { engine } from "express-handlebars";
-import { createServer } from "http";
 import __dirname, { createRoles } from "./src/utils.js";
-import { Server } from "socket.io";
-import * as dotenv from "dotenv";
-import mongoose from "mongoose";
 import Message from "./src/dao/mongo/models/chat.models.js";
 import homeRouter from "./src/Router/home.routes.js";
 import productModel from "./src/dao/mongo/models/products.models.js";
 import sessionRouter from "./src/Router/session.routes.js";
-import MongoStore from "connect-mongo";
-import session from "express-session";
-import passport from "passport";
 import initializePassport from "./src/config/passport.config.js";
 import MongoSingleton from "./src/services/MongoSingleton.js";
 import compression from "express-compression";
 import errorHandle from "./src/middlewares/errors.js";
-import cookieParser from "cookie-parser";
 
 dotenv.config();
 const app = express();
@@ -56,6 +61,20 @@ initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookieParser());
+app.use(cors());
+//configuracion de swagger
+const swaggerOptions = {
+  swaggerDefinition: {
+    iopenapi: "3.0.1",
+    info: {
+      title: "Documentacion de api",
+      description: "documentacion de apis del eccomerce de coderhouse",
+    },
+  },
+  apis: ["./src/docs/**/*.yaml"],
+};
+
+const specs = swaggerJsdoc(swaggerOptions);
 
 // Configurar el middleware para manejar las solicitudes JSON
 app.use(express.urlencoded({ extended: true }));
@@ -71,6 +90,8 @@ app.use("/api/cart", cartRouter);
 app.use("/api/views", viewsRouter);
 //api de sesiones
 app.use("/api/sessions", sessionRouter);
+//swagger
+app.use("/api-docs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 // Configurar el directorio estático para archivos públicos
 app.use(express.static("public"));

@@ -7,7 +7,7 @@ const Manager = new productManager();
 //getProductByCode
 productRouter.get("/:code", async (req, res) => {
   const code = req.params.code;
-  const product = await Manager.getProductByCode(code);
+  const product = await Manager.getProductsByCode(code);
   res.json(product);
 });
 //getProducts
@@ -29,7 +29,7 @@ productRouter.put("/:code", [verifyToken, isAdmin, isPremium], async (req, res) 
   res.json(product);
 });
 //deleteProduct
-productRouter.delete("/:code", [verifyToken, isAdmin, isPremium], async (req, res) => {
+productRouter.delete("/:code", [verifyToken, isAdmin], async (req, res) => {
   const code = req.params.code;
   const product = await Manager.deleteProduct(code);
   res.json(product);
