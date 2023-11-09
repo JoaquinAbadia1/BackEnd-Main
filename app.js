@@ -62,19 +62,20 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookieParser());
 app.use(cors());
-//configuracion de swagger
-const swaggerOptions = {
-  swaggerDefinition: {
-    iopenapi: "3.0.1",
+//SwaggerOptions
+const SwaggerOptions = {
+  definition: {
+    openapi: "3.0.1",
     info: {
-      title: "Documentacion de api",
-      description: "documentacion de apis del eccomerce de coderhouse",
+      title: "Documentacion del poder",
+      description: "y del saber",
     },
   },
-  apis: ["./src/docs/**/*.yaml"],
+  apis: [`${__dirname}/docs/**/*.yaml`],
 };
 
-const specs = swaggerJsdoc(swaggerOptions);
+//conectamos Swagger
+const specs = swaggerJsdoc(SwaggerOptions);
 
 // Configurar el middleware para manejar las solicitudes JSON
 app.use(express.urlencoded({ extended: true }));
@@ -91,7 +92,7 @@ app.use("/api/views", viewsRouter);
 //api de sesiones
 app.use("/api/sessions", sessionRouter);
 //swagger
-app.use("/api-docs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
+app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 // Configurar el directorio estático para archivos públicos
 app.use(express.static("public"));

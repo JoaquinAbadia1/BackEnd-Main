@@ -73,7 +73,7 @@ export const login = async (req, res) => {
     });
   }
   const token = jwt.sign({ id: userExist._id }, process.env.SECRET, {
-    expiresIn: 86400, // 24 hours
+    expiresIn: "24h", // 24 hours
   });
   const email = userExist.email;
   // Establecer una cookie llamada "token" con el valor del token
@@ -101,7 +101,7 @@ export const forgotPassword = async (req, res) => {
   }
   const message = { message: "email enviado" };
   const token = jwt.sign({ id: userExist._id }, process.env.SECRET, {
-    expiresIn: 3600000, // 1 hour
+    expiresIn: "1h",
   });
   const verificationLink = `http://localhost:8080/api/views/regeneratepass/${token}`;
   await transporter.sendMail({
