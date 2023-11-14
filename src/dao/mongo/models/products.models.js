@@ -19,9 +19,8 @@ const productSchema = new mongoose.Schema({
   stock: Number,
   category: String,
   thumbnail: String,
-  category: String,
+
   timestamp: { type: Date, default: Date.now },
-  creator: String,
 });
 
 productSchema.plugin(mongoosePaginate);
