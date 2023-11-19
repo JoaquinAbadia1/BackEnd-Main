@@ -13,12 +13,13 @@ class productManager {
     try {
       const products = await productModel.find().lean();
       return products;
-    } catch {
-      CustomError.createError({
-        name: "error en la base de datos",
-        message: "error al obtener los productos",
-        code: enumErrors.DATABASE_ERROR,
-      });
+    } catch (error) {
+      // CustomError.createError({
+      //   name: "error en la base de datos",
+      //   message: "error al obtener los productos",
+      //   code: enumErrors.DATABASE_ERROR,
+      // });
+      console.error(error);
     }
   }
 
@@ -53,11 +54,12 @@ class productManager {
       const productSave = await newProduct.save();
       return productSave;
     } catch (error) {
-      CustomError.createError({
-        name: "error en la base de datos",
-        message: "error al agregar el producto",
-        code: enumErrors.DATABASE_ERROR,
-      });
+      // CustomError.createError({
+      //   name: "error en la base de datos",
+      //   message: "error al agregar el producto",
+      //   code: enumErrors.DATABASE_ERROR,
+      // });
+      console.error(error);
     }
   }
 
@@ -67,12 +69,13 @@ class productManager {
       const productId = productByCode._id;
       const productById = await productModel.findById(productId);
       return productById;
-    } catch {
-      CustomError.createError({
-        name: "error en la base de datos",
-        message: "error al obtener el producto",
-        code: enumErrors.DATABASE_ERROR,
-      });
+    } catch (error) {
+      // CustomError.createError({
+      //   name: "error en la base de datos",
+      //   message: "error al obtener el producto",
+      //   code: enumErrors.DATABASE_ERROR,
+      // });
+      console.error(error);
     }
   }
 
@@ -83,11 +86,12 @@ class productManager {
       const deleteProductById = await productModel.findByIdAndDelete(productId);
       return deleteProductById;
     } catch (error) {
-      CustomError.createError({
-        name: "error en la base de datos",
-        message: "error al obtener el producto",
-        code: enumErrors.DATABASE_ERROR,
-      });
+      // CustomError.createError({
+      //   name: "error en la base de datos",
+      //   message: "error al obtener el producto",
+      //   code: enumErrors.DATABASE_ERROR,
+      // });
+      console.error(error);
     }
   }
   async updateProdcutByCode(code, modified) {
@@ -95,11 +99,12 @@ class productManager {
       const productById = await productModel.findByIdAndUpdate(code, modified);
       return productById;
     } catch (error) {
-      CustomError.createError({
-        name: "error en la base de datos",
-        message: "error al modificar el producto",
-        code: enumErrors.DATABASE_ERROR,
-      });
+      // CustomError.createError({
+      //   name: "error en la base de datos",
+      //   message: "error al modificar el producto",
+      //   code: enumErrors.DATABASE_ERROR,
+      // });
+      console.error(error);
     }
   }
   async removeStock(code, quantity) {
@@ -109,11 +114,12 @@ class productManager {
       const productSave = await productById.save();
       return productSave;
     } catch (error) {
-      CustomError.createError({
-        name: "error en la base de datos",
-        message: "error al modificar el producto",
-        code: enumErrors.DATABASE_ERROR,
-      });
+      // CustomError.createError({
+      //   name: "error en la base de datos",
+      //   message: "error al modificar el producto",
+      //   code: enumErrors.DATABASE_ERROR,
+      // });
+      console.error(error);
     }
   }
 }

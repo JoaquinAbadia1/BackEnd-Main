@@ -95,7 +95,7 @@ cartRouter.post("/:id/order", async (req, res) => {
       res.json({ message: "orden generada", result });
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 });
 

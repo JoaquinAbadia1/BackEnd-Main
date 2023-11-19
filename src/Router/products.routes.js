@@ -16,16 +16,16 @@ productRouter.get("/", async (req, res) => {
   res.json(products);
 });
 //addProduct
-productRouter.post("/addnewProduct", [verifyToken, isAdmin, isPremium], async (req, res) => {
+productRouter.post("/addnewProduct", [verifyToken, isAdmin], async (req, res) => {
   const product = req.body;
   const newProduct = await Manager.addProduct(product);
   res.json(newProduct);
 });
 // updateProductByCode
-productRouter.put("/:code", [verifyToken, isAdmin, isPremium], async (req, res) => {
+productRouter.put("/:code", [verifyToken, isAdmin], async (req, res) => {
   const code = req.params.code;
-  const modified = req.body;
-  const product = await Manager.updateProductByCode(code, modified);
+  const moodifiedProduct = req.body;
+  const product = await Manager.updateProdcutByCode(code, moodifiedProduct);
   res.json(product);
 });
 //deleteProduct

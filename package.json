@@ -43,5 +43,8 @@
     "swagger-ui-express": "^5.0.0",
     "winston": "^3.11.0"
   },
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "localstorage-polyfill": "^1.0.1"
+  }
 }

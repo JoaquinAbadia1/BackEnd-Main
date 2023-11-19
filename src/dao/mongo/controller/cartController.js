@@ -19,24 +19,26 @@ class cartManager {
     try {
       const carts = cartModel.find().lean();
       return carts;
-    } catch {
-      CustomError.createError({
-        name: "error en la base de datos",
-        message: "error al traer los carritos",
-        code: enumErrors.DATABASE_ERROR,
-      });
+    } catch (error) {
+      // CustomError.createError({
+      //   name: "error en la base de datos",
+      //   message: "error al traer los carritos",
+      //   code: enumErrors.DATABASE_ERROR,
+      // });
+      console.error(error);
     }
   }
   async newCart() {
     try {
       let cart = await cartModel.create([{ products: [] }]);
       return cart;
-    } catch {
-      CustomError.createError({
-        name: "error en la base de datos",
-        message: "error al crear el carrito",
-        code: enumErrors.DATABASE_ERROR,
-      });
+    } catch (error) {
+      // CustomError.createError({
+      //   name: "error en la base de datos",
+      //   message: "error al crear el carrito",
+      //   code: enumErrors.DATABASE_ERROR,
+      // });
+      console.error(error);
     }
   }
 
@@ -44,12 +46,13 @@ class cartManager {
     try {
       const carts = cartModel.findById(id);
       return carts;
-    } catch {
-      CustomError.createError({
-        name: "error en la base de datos",
-        message: "error al obtener el carrito",
-        code: enumErrors.DATABASE_ERROR,
-      });
+    } catch (error) {
+      // CustomError.createError({
+      //   name: "error en la base de datos",
+      //   message: "error al obtener el carrito",
+      //   code: enumErrors.DATABASE_ERROR,
+      // });
+      console.error(error);
     }
   }
   async addProductToCart(idCart, codeProduct) {
@@ -57,11 +60,12 @@ class cartManager {
       let cart = await this.getCartsById(idCart);
 
       if (!cart) {
-        CustomError.createError({
-          name: "error en la base de datos",
-          message: "no existe el carrito",
-          code: enumErrors.NOT_FOUND_ERROR,
-        });
+        // CustomError.createError({
+        //   name: "error en la base de datos",
+        //   message: "no existe el carrito",
+        //   code: enumErrors.NOT_FOUND_ERROR,
+        // });
+        console.error(error);
       }
 
       let productManager = new ProductManager();
@@ -78,12 +82,13 @@ class cartManager {
       }
       await cart.save();
       return cart;
-    } catch {
-      CustomError.createError({
-        name: "error en la base de datos",
-        message: "error al obtener el carrito",
-        code: enumErrors.DATABASE_ERROR,
-      });
+    } catch (error) {
+      // CustomError.createError({
+      //   name: "error en la base de datos",
+      //   message: "error al obtener el carrito",
+      //   code: enumErrors.DATABASE_ERROR,
+      // });
+      console.error(error);
     }
   }
   async deleteFromCart(idCart, codeProduct) {
@@ -91,11 +96,12 @@ class cartManager {
       let cart = await this.getCartsById(idCart);
 
       if (!cart) {
-        CustomError.createError({
-          name: "error en la base de datos",
-          message: "no existe el carrito",
-          code: enumErrors.NOT_FOUND_ERROR,
-        });
+        // CustomError.createError({
+        //   name: "error en la base de datos",
+        //   message: "no existe el carrito",
+        //   code: enumErrors.NOT_FOUND_ERROR,
+        // });
+        console.error(error);
       }
 
       let productManager = new ProductManager();
@@ -112,12 +118,13 @@ class cartManager {
       }
       await cart.save();
       return cart;
-    } catch {
-      CustomError.createError({
-        name: "error en la base de datos",
-        message: "error al obtener el carrito",
-        code: enumErrors.DATABASE_ERROR,
-      });
+    } catch (error) {
+      // CustomError.createError({
+      //   name: "error en la base de datos",
+      //   message: "error al obtener el carrito",
+      //   code: enumErrors.DATABASE_ERROR,
+      // });
+      console.error(error);
     }
   }
 
@@ -125,12 +132,13 @@ class cartManager {
     try {
       let cart = await cartModel.findByIdAndDelete(id);
       return cart;
-    } catch {
-      CustomError.createError({
-        name: "error en la base de datos",
-        message: "error al obtener el carrito",
-        code: enumErrors.DATABASE_ERROR,
-      });
+    } catch (error) {
+      // CustomError.createError({
+      //   name: "error en la base de datos",
+      //   message: "error al obtener el carrito",
+      //   code: enumErrors.DATABASE_ERROR,
+      // });
+      console.error(error);
     }
   }
   submitOrder = async (idCart, order, req) => {
@@ -152,11 +160,12 @@ class cartManager {
     try {
       let cart = await this.getCartsById(idCart);
       if (!idCart) {
-        CustomError.createError({
-          name: "error en la base de datos",
-          message: "no existe el carrito",
-          code: enumErrors.NOT_FOUND_ERROR,
-        });
+        // CustomError.createError({
+        //   name: "error en la base de datos",
+        //   message: "no existe el carrito",
+        //   code: enumErrors.NOT_FOUND_ERROR,
+        // });
+        console.error(error);
       }
       let orderCreate = await orderModel.create({
         products: cart.products,
@@ -244,12 +253,13 @@ class cartManager {
       console.log("Estoy aqyu");
 
       return cart;
-    } catch {
-      CustomError.createError({
-        name: "error en la base de datos",
-        message: "error al obtener el carrito",
-        code: enumErrors.DATABASE_ERROR,
-      });
+    } catch (error) {
+      // CustomError.createError({
+      //   name: "error en la base de datos",
+      //   message: "error al obtener el carrito",
+      //   code: enumErrors.DATABASE_ERROR,
+      // });
+      console.error(error);
     }
   };
 }

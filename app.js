@@ -12,6 +12,7 @@ import cookieParser from "cookie-parser";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUiExpress from "swagger-ui-express";
 import cors from "cors";
+import "localstorage-polyfill";
 // mis dependencias locales
 import productRouter from "./src/Router/products.routes.js";
 import cartRouter from "./src/Router/cart.routes.js";
