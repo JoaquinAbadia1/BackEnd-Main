@@ -6,8 +6,7 @@
   "scripts": {
     "start": "nodemon app.js",
     "test1": "mocha test/product.test.js",
-    "test2": "mocha test/user.test.js",
-    "test3": "mocha test/cart.test.js"
+    "test2": "mocha test/user.test.js"
   },
   "keywords": [],
   "author": "",
