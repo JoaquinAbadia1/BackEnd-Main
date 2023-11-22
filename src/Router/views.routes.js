@@ -5,6 +5,7 @@ import Message from "../dao/mongo/models/chat.models.js";
 import productManager from "../dao/mongo/controller/productController.js";
 import cartManager from "../dao/mongo/controller/cartController.js";
 import { verifyToken, isAdmin } from "../middlewares/authJWT.js";
+import userModel from "../dao/mongo/models/user.models.js";
 
 const product = new productManager();
 const cart = new cartManager();
@@ -55,5 +56,14 @@ viewsRouter.get("/regeneratepass/:token", (req, res) => {
     title: "Lista de usuarios",
   });
 });
-
+viewsRouter.get("/profile", (req, res) => {
+  res.render("userProfile", {
+    title: "Perfil de usuario",
+  });
+});
+viewsRouter.get("/admin", [verifyToken, isAdmin], async (req, res) => {
+  const user = await userModel.find().lean();
+  //console.log(user);
+  res.render("adminPanel", { user });
+});
 export default viewsRouter;

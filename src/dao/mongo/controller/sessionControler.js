@@ -80,7 +80,7 @@ export const login = async (req, res) => {
   res.setHeader(
     "Set-Cookie",
     cookie.serialize("token", token, {
-      httpOnly: true, // Para que la cookie no sea accesible desde JavaScript en el navegador
+      // Para que la cookie no sea accesible desde JavaScript en el navegador
       maxAge: 86400, // Tiempo de expiración en segundos (aquí, 24 horas)
       path: "/", // La cookie estará disponible en todas las rutas del sitio
     })
@@ -106,7 +106,7 @@ export const forgotPassword = async (req, res) => {
   const verificationLink = `http://localhost:8080/api/views/regeneratepass/${token}`;
   await transporter.sendMail({
     from: '"restablecer contraseña" <abadiajoaquin04@gmail.com>', // sender address
-    to: "joaquinabadia04@gmail.com", // list of receivers
+    to: email, // list of receivers
     subject: "restablecer contraseña", // Subject line
     html: `
       <p>Para recuperar tu contraseña haz click en el siguiente link</p>
@@ -114,4 +114,9 @@ export const forgotPassword = async (req, res) => {
       `, // html body
   });
   res.json({ verificationLink });
+};
+export const logout = async (req, res) => {
+  req.session.destroy();
+  res.clearCookie("token");
+  res.redirect("/");
 };

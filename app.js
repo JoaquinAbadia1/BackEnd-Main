@@ -22,6 +22,7 @@ import Message from "./src/dao/mongo/models/chat.models.js";
 import homeRouter from "./src/Router/home.routes.js";
 import productModel from "./src/dao/mongo/models/products.models.js";
 import sessionRouter from "./src/Router/session.routes.js";
+import userRouter from "./src/Router/user.routes.js";
 import initializePassport from "./src/config/passport.config.js";
 import MongoSingleton from "./src/services/MongoSingleton.js";
 import compression from "express-compression";
@@ -92,6 +93,8 @@ app.use("/api/cart", cartRouter);
 app.use("/api/views", viewsRouter);
 //api de sesiones
 app.use("/api/sessions", sessionRouter);
+//api de usuarios
+app.use("/api/users", userRouter);
 //swagger
 app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
