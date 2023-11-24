@@ -98,5 +98,21 @@ cartRouter.post("/:id/order", async (req, res) => {
     console.error(error);
   }
 });
+// vaciar carrito
+cartRouter.delete("/:cid", async (req, res) => {
+  const { cid } = req.params;
+  try {
+    let cart = await carts.getCartsById(cid);
+    if (!cart) {
+      res.status(404).json({ error: "carrito no encontrado" });
+    } else {
+      await carts.deleteCart(cid);
+      res.json({ message: "carrito vaciado" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
 
 export default cartRouter;
