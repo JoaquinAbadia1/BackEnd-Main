@@ -7,6 +7,7 @@ import Role from "../models/role.models.js";
 import CustomError from "../../../services/errors/customErrors.js";
 import { enumErrors, generateUserErrorInfo } from "../../../services/errors/customErrors.js";
 import { transporter } from "../../../config/mailing.config.js";
+import cartModel from "../models/carts.models.js";
 export const signup = async (req, res) => {
   const { username, email, password, age, roles } = req.body;
   const newUser = new userModel({
@@ -53,42 +54,58 @@ export const signup = async (req, res) => {
   });
   res.json({ token });
 };
+
 export const login = async (req, res) => {
   const { username, password } = req.body;
 
   const userExist = await userModel.findOne({ username: username }).populate("roles");
   if (!userExist) {
-    CustomError.createError({
-      name: "error al loguear",
-      message: "usuario no existe",
-      code: enumErrors.AUTHENTICATION_ERROR,
-    });
+    console.log("Usuario no existe");
+    return res.status(404).json({ error: "Usuario no encontrado" });
   }
+
   const matchPassword = isValidPassword(password, userExist.password);
   if (!matchPassword) {
-    CustomError.createError({
-      name: "error al loguear",
-      message: "error de autenticacion",
-      code: enumErrors.AUTHENTICATION_ERROR,
-    });
+    console.log("Contraseña incorrecta");
+    return res.status(401).json({ error: "Contraseña incorrecta" });
   }
+
   const token = jwt.sign({ id: userExist._id }, process.env.SECRET, {
-    expiresIn: "24h", // 24 hours
+    expiresIn: "24h", // 24 horas
   });
-  const email = userExist.email;
-  // Establecer una cookie llamada "token" con el valor del token
-  res.setHeader(
-    "Set-Cookie",
-    cookie.serialize("token", token, {
-      // Para que la cookie no sea accesible desde JavaScript en el navegador
-      maxAge: 86400, // Tiempo de expiración en segundos (aquí, 24 horas)
-      path: "/", // La cookie estará disponible en todas las rutas del sitio
-    })
-  );
+
+  // Buscar o crear un carrito para el usuario
+  let cart = await cartModel.findOne({ user: userExist._id });
+
+  if (!cart) {
+    // Si no hay un carrito, crea uno nuevo
+    cart = await cartModel.create({ products: [], user: userExist._id });
+  }
+
+  // Asignar el ID del carrito al usuario
+  userExist.cartId = cart._id;
+  await userExist.save();
+
+  // Configurar las cookies para el token y el ID del carrito
+  const tokenCookie = cookie.serialize("token", token, {
+    maxAge: 86400, // Tiempo de expiración en segundos (aquí, 24 horas)
+    path: "/", // La cookie estará disponible en todas las rutas del sitio
+  });
+
+  const cartIdCookie = cookie.serialize("cartId", cart._id, {
+    maxAge: 86400, // Tiempo de expiración en segundos (aquí, 24 horas)
+    path: "/", // La cookie estará disponible en todas las rutas del sitio
+  });
+
+  // Establecer ambas cookies en la respuesta
+  res.setHeader("Set-Cookie", [tokenCookie, cartIdCookie]);
 
   console.log(token);
-  res.json({ token });
+
+  // Enviar el ID del carrito como parte de la respuesta JSON
+  res.json({ token, cartId: cart._id });
 };
+
 export const forgotPassword = async (req, res) => {
   const { email } = req.body;
   const userExist = await userModel.findOne({ email: email });
@@ -117,6 +134,7 @@ export const forgotPassword = async (req, res) => {
 };
 export const logout = async (req, res) => {
   req.session.destroy();
-  res.clearCookie("token");
+  res.clearCookie("token", "cartId");
   res.redirect("/");
+  localStorage.clear();
 };

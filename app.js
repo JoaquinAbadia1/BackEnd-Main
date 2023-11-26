@@ -109,6 +109,15 @@ app.set("view engine", "handlebars");
 app.set("views", `${__dirname}/views`);
 //manejo de errores
 app.use(errorHandle);
+function getUserNameFromToken(token) {
+  try {
+    const decoded = jwt.verify(token, "tu-secreto");
+    return decoded.username;
+  } catch (error) {
+    return null;
+  }
+}
+
 // Configuración del lado del servidor
 const io = new Server(httpServer);
 let messages = [];
@@ -116,15 +125,33 @@ let messages = [];
 io.on("connection", (socket) => {
   //console.log("Nuevo cliente conectado!");
 
-  socket.on("chat message", async (msg) => {
-    // Crea un nuevo mensaje y guárdalo en la base de datos
-    const message = new Message({ content: msg });
-    await message.save();
+  const token = socket.handshake.auth.token; // Acceder al token desde la conexión de Socket.IO
+
+  const username = getUserNameFromToken(token);
+  if (!username) {
+    // Manejar el caso en que el token no es válido
+    socket.disconnect();
+    return;
+  }
+
+  // Enviar mensajes anteriores al usuario que se conecta
+  socket.on("chat history", () => {
+    socket.emit("chat history", messages);
   });
 
-  socket.on("message", (data) => {
-    messages.push(data);
-    io.emit("messageLogs", messages);
+  socket.on("chat message", (msg) => {
+    const message = { username, text: msg };
+
+    // Añadir el mensaje al historial
+    messages.push(message);
+
+    // Limitar la cantidad de mensajes en el historial (opcional)
+    if (messages.length > 50) {
+      messages.shift(); // Eliminar el mensaje más antiguo
+    }
+
+    // Emitir el mensaje a todos los usuarios conectados
+    io.emit("chat message", message);
   });
 
   // Escuchar evento 'agregarProducto' y emitir 'nuevoProductoAgregado'
@@ -147,7 +174,6 @@ let dbConnect = mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-mongoose.set("strictQuery", true);
 
 dbConnect.then(
   () => {

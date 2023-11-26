@@ -1,15 +1,38 @@
 import { Router } from "express";
 import cartManager from "../dao/mongo/controller/cartController.js";
+import jwt from "jsonwebtoken";
+import userModel from "../dao/mongo/models/user.models.js";
+import cartModel from "../dao/mongo/models/carts.models.js";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 const cartRouter = Router();
 const carts = new cartManager();
 //nuevo carrito
 cartRouter.post("/newCart", async (req, res) => {
   try {
-    let cart = await carts.newCart();
-    res.json({ message: "carrito creado", cart });
+    const token = req.cookies.token;
+
+    if (!token) {
+      return res.status(401).json({ error: "Token no proporcionado" });
+    }
+
+    const decodedToken = jwt.verify(token, process.env.SECRET);
+
+    const user = await userModel.findById(decodedToken.id);
+
+    if (!user) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    const cart = await carts.newCart(user, token);
+    const cartId = cart._id;
+
+    res.json({ message: "Carrito creado", cart });
   } catch (err) {
     console.log(err);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 });
 

@@ -11,7 +11,18 @@ const postToCart = async (code, carrito) => {
 };
 
 async function addToCart(code) {
-  const lsCartId = localStorage.getItem("cartId");
+  const cookiesString = document.cookie;
+  const cookiesArray = cookiesString.split(";");
+  const cookies = {};
+  cookiesArray.forEach((cookie) => {
+    const [name, value] = cookie.trim().split("=");
+    cookies[name] = value;
+  });
+  const token = cookies.token;
+  const lsCartId = cookies.cartId;
+
+  console.log("Token:", token);
+  console.log("ID del Carrito:", lsCartId);
   let cart;
   if (!lsCartId) {
     const response = await fetch("/api/cart/newCart", {
