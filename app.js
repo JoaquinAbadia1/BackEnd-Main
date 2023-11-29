@@ -125,33 +125,15 @@ let messages = [];
 io.on("connection", (socket) => {
   //console.log("Nuevo cliente conectado!");
 
-  const token = socket.handshake.auth.token; // Acceder al token desde la conexión de Socket.IO
-
-  const username = getUserNameFromToken(token);
-  if (!username) {
-    // Manejar el caso en que el token no es válido
-    socket.disconnect();
-    return;
-  }
-
-  // Enviar mensajes anteriores al usuario que se conecta
-  socket.on("chat history", () => {
-    socket.emit("chat history", messages);
+  socket.on("chat message", async (msg) => {
+    // Crea un nuevo mensaje y guárdalo en la base de datos
+    const message = new Message({ content: msg });
+    await message.save();
   });
 
-  socket.on("chat message", (msg) => {
-    const message = { username, text: msg };
-
-    // Añadir el mensaje al historial
-    messages.push(message);
-
-    // Limitar la cantidad de mensajes en el historial (opcional)
-    if (messages.length > 50) {
-      messages.shift(); // Eliminar el mensaje más antiguo
-    }
-
-    // Emitir el mensaje a todos los usuarios conectados
-    io.emit("chat message", message);
+  socket.on("message", (data) => {
+    messages.push(data);
+    io.emit("messageLogs", messages);
   });
 
   // Escuchar evento 'agregarProducto' y emitir 'nuevoProductoAgregado'

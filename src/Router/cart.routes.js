@@ -137,5 +137,21 @@ cartRouter.delete("/:cid", async (req, res) => {
     res.status(500).json({ error: "Error interno del servidor" });
   }
 });
+cartRouter.post("/:cid/order", async (req, res) => {
+  const { cid } = req.params; // Utiliza req.params en lugar de req.cookies.cartId
+  try {
+    const cart = await cartModel.findById(cid);
 
+    if (!cart) {
+      return res.status(404).json({ error: "Carrito no encontrado" });
+    }
+
+    await cartController.submitOrder(cid);
+
+    res.json({ message: "Orden generada exitosamente" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al procesar la orden" });
+  }
+});
 export default cartRouter;

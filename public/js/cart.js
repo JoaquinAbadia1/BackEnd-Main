@@ -61,21 +61,6 @@ const emptyCart = async () => {
   }
 };
 
-const submitOrder = async () => {
-  try {
-    const lsCartId = localStorage.getItem("cartId");
-    const response = await fetch(`/api/cart/${lsCartId}/order`, {
-      method: "POST",
-      headers: { "Content-type": "application/json" },
-    });
-    if (response.ok) {
-      alert("Orden generada");
-    }
-  } catch (error) {
-    console.error("Error al generar la orden:", error.message);
-  }
-};
-
 // Función para obtener el carrito desde el servidor
 async function getCart() {
   try {

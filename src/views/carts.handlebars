@@ -13,12 +13,15 @@
   {{/each}}
   <h1 id="cart-total">Total: </h1>
 
-  <button onclick="submitOrder()" id="checkout-button">Finalizar orden</button>
+  <button onclick="order()" id="checkout-button">Finalizar orden</button>
 </div>
 
 <script src="/js/cart.js"></script>
 <script src="../dao/mongo/controller/cartController.js"></script>
 <script>
-  const ls = localStorage.getItem('cartId');
+
+  order = () => { const cartId = getCookie('cartId'); if (!cartId) { console.error('No se encontró el cartId en las cookies.'); return; } fetch(`/api/cart/${cartId}/order`, { method: 'POST', headers: { 'Content-Type': 'application/json', }, }) .then((res) => res.json()) .then((data) => { console.log(data); window.location.href = '/'; }) .catch((error) => { console.error('Error al realizar la orden:', error); }); }; function getCookie(name) { const value = `; ${document.cookie}`; const parts = value.split(`; ${name}=`); if (parts.length === 2) return parts.pop().split(';').shift(); }
+
 </script>
+
 <link rel="stylesheet" href="/css/cart.css" />

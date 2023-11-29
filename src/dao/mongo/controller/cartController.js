@@ -1,10 +1,13 @@
 import ProductManager from "./productController.js";
 import cartModel from "../models/carts.models.js";
-import orderModel from "../models/order.models.js";
+
 import userModel from "../models/user.models.js";
 import { transporter } from "../../../config/mailing.config.js";
 import productModel from "../models/products.models.js";
 import jwt from "jsonwebtoken";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 class CartManager {
   async getCarts() {
@@ -56,7 +59,7 @@ class CartManager {
       const productExist = cart.products.find((e) => e.code === codeProduct);
 
       if (!productExist) {
-        cart.products.push({ ...product.toObject(), quantity: 1 });
+        cart.products.push({ ...product, quantity: 1 });
       } else {
         productExist.quantity += 1;
       }
@@ -94,91 +97,56 @@ class CartManager {
     }
   }
 
-  // ... Otras funciones del carrito
-
-  // Función para enviar la orden y actualizar el stock
-  submitOrder = async (idCart, order, req) => {
+  submitOrder = async (cartId, req) => {
     try {
       const token = req.cookies.token;
       const decodedToken = jwt.verify(token, process.env.SECRET);
-      const user = await userModel.findById(decodedToken.id);
+      const user = decodedToken.id;
+      // Obtener el carrito del usuario
+      const userCart = await cartModel.findById(cartId);
 
-      if (!user) {
-        throw new Error("Usuario no encontrado");
+      if (!userCart) {
+        throw new Error("El carrito no fue encontrado.");
       }
 
-      const email = user.email;
-      const cart = await this.getCartsById(idCart);
+      const products = userCart.products;
 
-      if (!cart) {
-        console.error("No existe el carrito");
-      }
-
-      const orderCreate = await orderModel.create({
-        products: cart.products.map((product) => product._id),
-        user: user.username,
-      });
-
-      const productDetails = await Promise.all(
-        cart.products.map(async (cartProduct) => {
-          const product = await productModel.findById(cartProduct._id);
-
-          return {
-            title: product.title,
-            price: product.price,
-            stock: product.stock,
-            code: product.code,
-            quantity: cartProduct.quantity,
-          };
-        })
-      );
-
-      // Envía el correo con los detalles de la compra
+      // Enviar correo con detalles de la compra
       await transporter.sendMail({
         from: '"Resumen de Compra" <abadiajoaquin04@gmail.com>',
-        to: email,
+        to: user.email, // Asegúrate de tener acceso a la variable `user` aquí
         subject: "Resumen de Compra",
-        text: "Muchas gracias por comprar en GameFusion, que disfrutes tu compra",
+        text: "Muchas gracias por comprar en GameFusion. ¡Esperamos que disfrutes tu compra!",
         html: `
-        <h1>Gracias por su compra</h1>
-        <h3>Detalles de su compra</h3>
-        <ul>
-          ${productDetails
-            .map(
-              (product) => `
-            <li>
-              Título: ${product.title}<br>
-              Precio:$ ${product.price}<br>
-              Cantidad: ${product.quantity}<br>
-            </li>
-          `
-            )
-            .join("")}
-          <li>Usuario: ${user.username}</li>
-        </ul>
-      `,
+          <h1>Gracias por su compra</h1>
+          <h3>Detalles de su compra</h3>
+          <ul>
+            ${products
+              .map(
+                (product) => `
+                <li>
+                  Título: ${product.title}<br>
+                  Precio: $${product.price}<br>
+                  Cantidad: ${product.quantity}<br>
+                </li>
+              `
+              )
+              .join("")}
+            <li>Usuario: ${user.username}</li> 
+          </ul>
+        `,
       });
 
-      // Actualiza el stock y vacía el carrito
-      await Promise.all(
-        cart.products.map(async (cartProduct) => {
-          const product = await productModel.findById(cartProduct._id);
+      // Descontar stock de productos
+      for (const product of products) {
+        const productExist = await productModel.findById(product._id);
+        if (productExist) {
+          productExist.stock -= product.quantity;
+          await productExist.save();
+        }
+      }
 
-          if (product && product.stock >= cartProduct.quantity) {
-            product.stock -= cartProduct.quantity;
-            await product.save();
-          } else {
-            console.log(`No hay suficiente stock para ${cartProduct.title}`);
-          }
-        })
-      );
-
-      cart.products = [];
-      await cart.save();
-
-      console.log("Compra realizada con éxito");
-
-      return cart;
+      // Otros procesamientos después de enviar la orden
     } catch (error) {
       console.error(error);
       throw new Error("Error al procesar la orden");

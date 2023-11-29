@@ -66,4 +66,5 @@ viewsRouter.get("/admin", [verifyToken, isAdmin], async (req, res) => {
   //console.log(user);
   res.render("adminPanel", { user });
 });
+
 export default viewsRouter;
