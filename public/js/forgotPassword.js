@@ -22,8 +22,6 @@ loginForm.addEventListener("submit", function (event) {
   if (password !== newPassword) {
     alert("las contraseñas no coinciden");
   } else {
-    postForgot(username, password, newPassword).then((datos) =>
-      alert("contraseña reiniciada").catch((err) => alert("algo paso"))
-    );
+    postForgot(username, password, newPassword).then((datos) => alert("contraseña reiniciada").catch((err) => alert("algo paso")));
   }
 });

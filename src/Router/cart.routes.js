@@ -138,7 +138,7 @@ cartRouter.delete("/:cid", async (req, res) => {
   }
 });
 cartRouter.post("/:cid/order", async (req, res) => {
-  const { cid } = req.params; // Utiliza req.params en lugar de req.cookies.cartId
+  const { cid } = req.cookies.cartId;
   try {
     const cart = await cartModel.findById(cid);
 

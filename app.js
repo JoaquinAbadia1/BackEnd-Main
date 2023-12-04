@@ -27,6 +27,7 @@ import initializePassport from "./src/config/passport.config.js";
 import MongoSingleton from "./src/services/MongoSingleton.js";
 import compression from "express-compression";
 import errorHandle from "./src/middlewares/errors.js";
+import routerPayment from "./src/Router/payment.routes.js";
 
 dotenv.config();
 const app = express();
@@ -56,6 +57,7 @@ app.use(
     secret: "codersecret",
     resave: false,
     saveUninitialized: false,
+    cookie: { secure: false },
   })
 );
 mongoose.set("strictQuery", false);
@@ -97,6 +99,8 @@ app.use("/api/sessions", sessionRouter);
 app.use("/api/users", userRouter);
 //swagger
 app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
+//paypal
+app.use("/api/payment", routerPayment);
 
 // Configurar el directorio estático para archivos públicos
 app.use(express.static("public"));

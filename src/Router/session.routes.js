@@ -26,6 +26,7 @@ sessionRouter.get("/githubcallback", passport.authenticate("github", { failureRe
   req.session.admin = true;
   res.redirect("/");
 });
+
 sessionRouter.get("/users", async (req, res) => {
   const users = await userModel.find();
   res.json(users);

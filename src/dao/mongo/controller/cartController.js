@@ -1,6 +1,6 @@
 import ProductManager from "./productController.js";
 import cartModel from "../models/carts.models.js";
-
+import cookieParser from "cookie-parser";
 import userModel from "../models/user.models.js";
 import { transporter } from "../../../config/mailing.config.js";
 import productModel from "../models/products.models.js";
